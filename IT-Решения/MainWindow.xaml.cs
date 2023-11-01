@@ -26,7 +26,6 @@ namespace IT_Решения
         public MainWindow()
         {
             InitializeComponent();
-            CloseAll();
         }
         public void Login(object sender, RoutedEventArgs e)
         {
@@ -41,9 +40,12 @@ namespace IT_Решения
             answer = answer.Trim();
             if (answer == $"{password.Text}")
             {
-                login.Opacity = 0;
-                Top.Opacity = 1;
-                currentOrder.Opacity = 1;
+                currentOrder.Visibility = Visibility.Visible;
+                Top.Visibility = Visibility.Visible;
+                newOrder.Visibility = Visibility.Hidden;
+                previousOrder.Visibility = Visibility.Hidden;
+                profile.Visibility = Visibility.Hidden;
+                login.Visibility = Visibility.Hidden;
             }
             connection.Close();
         }
@@ -88,12 +90,23 @@ namespace IT_Решения
         {
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            //string sqlExpression = $"SELECT password FROM [dbo].[entry] WHERE login = \'{Username}\'";
-            string sqlExpression = $"UPDATE [dbo].[orders] SET id = 1, date = 2023/09/16, equipment = \'bake\', problem = \'broken\', description = \'bake dont bake\', author = \'Bebrovich\', status = \'in work\'";
+            string sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE status = \'working\' OR status = \'waitimg\'";
+            //string sqlExpression = $"INSERT INTO [dbo].[orders] VALUES (id = 1, date = 2023/09/16, equipment = \'bake\', problem = \'broken\', description = \'bake dont bake\', author = \'Bebrovich\', status = \'in work\')";
             SqlCommand command = new SqlCommand(sqlExpression, connection);
-            command.ExecuteNonQuery();
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Read();
+            string[] coloms = new string[7];
+            for(int i = 0;  i < coloms.Length; i++)
+            {
+                coloms[i] = Convert.ToString(reader.GetValue(i));
+            }
+            for (int i = 0; i < coloms.Length; i++)
+            {
+                coloms[i] = coloms[i].Trim();
+            }
+            //Convert.ToString(command.ExecuteScalar());
             SqlDataAdapter dataAdp = new SqlDataAdapter(command);
-            DataTable dt = new DataTable("Students");
+            DataTable dt = new DataTable("Orders");
             dataAdp.Fill(dt);
             currentOrderData.ItemsSource = dt.DefaultView;
             connection.Close();
