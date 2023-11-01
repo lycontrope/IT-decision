@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace IT_Решения
 {
@@ -32,11 +33,13 @@ namespace IT_Решения
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string Username = username.Text;
-            string sqlExpression = $"SELECT password FROM [dbo].[entry] WHERE login = &quot;{Username}&quot;";
+            string sqlExpression = $"SELECT password FROM [dbo].[entry] WHERE login = \'{Username}\'";
             SqlCommand command = new SqlCommand(sqlExpression, connection);
-            SqlDataReader reader = command.ExecuteReader();
-
-            if ((string)reader.GetValue(0) == $"{password.Text}")
+            //SqlDataReader reader = command.ExecuteReader();
+            command.ExecuteNonQuery();
+            string answer = Convert.ToString(command.ExecuteScalar());
+            answer = answer.Trim();
+            if (answer == $"{password.Text}")
             {
                 login.Opacity = 0;
                 Top.Opacity = 1;
@@ -55,35 +58,45 @@ namespace IT_Решения
         }
         public void NewOrder(object sender, RoutedEventArgs e)
         {
-            currentOrder.Opacity = 0;
-            newOrder.Opacity = 1;
-            previousOrder.Opacity = 0;
-            profile.Opacity = 0;
+            currentOrder.Visibility = Visibility.Hidden;
+            newOrder.Visibility = Visibility.Visible;
+            previousOrder.Visibility = Visibility.Hidden;
+            profile.Visibility = Visibility.Hidden;
         }
         public void CurrentOrder(object sender, RoutedEventArgs e)
         {
-            currentOrder.Opacity = 1;
-            newOrder.Opacity = 0;
-            previousOrder.Opacity = 0;
-            profile.Opacity = 0;
+            currentOrder.Visibility = Visibility.Visible;
+            newOrder.Visibility = Visibility.Hidden; 
+            previousOrder.Visibility = Visibility.Hidden;
+            profile.Visibility = Visibility.Hidden;
         }
         public void PreviousOrder(object sender, RoutedEventArgs e)
         {
-            currentOrder.Opacity = 0;
-            newOrder.Opacity = 0;
-            previousOrder.Opacity = 1;
-            profile.Opacity = 0;
+            currentOrder.Visibility = Visibility.Hidden;
+            newOrder.Visibility = Visibility.Hidden;
+            previousOrder.Visibility = Visibility.Visible;
+            profile.Visibility = Visibility.Hidden;
         }
         public void Profile(object sender, RoutedEventArgs e)
         {
-            currentOrder.Opacity = 0;
-            newOrder.Opacity = 0;
-            previousOrder.Opacity = 0;
-            profile.Opacity = 1;
+            currentOrder.Visibility = Visibility.Hidden;
+            newOrder.Visibility = Visibility.Hidden;
+            previousOrder.Visibility = Visibility.Hidden;
+            profile.Visibility = Visibility.Visible;
         }
         public void FindCurrentOrder(object sender, RoutedEventArgs e)
         {
-
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            //string sqlExpression = $"SELECT password FROM [dbo].[entry] WHERE login = \'{Username}\'";
+            string sqlExpression = $"UPDATE [dbo].[orders] SET id = 1, date = 2023/09/16, equipment = \'bake\', problem = \'broken\', description = \'bake dont bake\', author = \'Bebrovich\', status = \'in work\'";
+            SqlCommand command = new SqlCommand(sqlExpression, connection);
+            command.ExecuteNonQuery();
+            SqlDataAdapter dataAdp = new SqlDataAdapter(command);
+            DataTable dt = new DataTable("Students");
+            dataAdp.Fill(dt);
+            currentOrderData.ItemsSource = dt.DefaultView;
+            connection.Close();
         }
         public void FindPreviousOrder(object sender, RoutedEventArgs e)
         {   
