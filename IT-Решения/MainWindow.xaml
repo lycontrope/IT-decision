@@ -18,6 +18,7 @@
             <TextBox x:Name="username" Height="50" Canvas.Left="500" TextWrapping="Wrap" Text="" Canvas.Top="380" Width="350" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBox x:Name="password" Height="50" Canvas.Left="500" TextWrapping="Wrap" Text="" Canvas.Top="460" Width="350" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
             <Button ToolTip="" Content="Войти" Canvas.Left="500" Canvas.Top="540" Height="50" Width="350" Click="Login" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
+            <TextBlock x:Name="IncorrectLoginOrPassword" Text="Неправильный логин или пароль" Canvas.Left="520" Canvas.Top="620" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="20" Visibility="Hidden"/>
         </Canvas>
         <Canvas Name="Top" Focusable="True" Opacity="1" Visibility="Hidden">
             <Button ToolTip="" Content="Новая заявка" Canvas.Left="50" Canvas.Top="30" Height="50" Width="275" Click="NewOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
@@ -38,22 +39,28 @@
                 <DataGrid Grid.Row="1" x:Name="currentOrderData" AutoGenerateColumns="True" Margin="60,0,-1300,0">
                 </DataGrid>
             </Grid>
+            <TextBlock x:Name="NoCurrentOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
         <Canvas Name="newOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Заполниете все поля" Canvas.Left="50" Canvas.Top="145" Height="40" Width="320" TextAlignment="Center" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <TextBlock Text="Оборудывание" Canvas.Left="59" Canvas.Top="215" Height="78" Width="220" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="equipmentName" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="265" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Rectangle x:Name="warning1" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="47" Visibility="Hidden"/>
             <TextBlock Text="Тип неисправности" Canvas.Left="59" Canvas.Top="355" Height="78" Width="276" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="problemName" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="405" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Rectangle x:Name="warning2" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="402" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
             <TextBlock Text="Описание проблемы" Canvas.Left="59" Canvas.Top="495" Height="78" Width="288" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="descriptionName" Height="180" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="545" Width="1060" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30"/>
+            <Rectangle x:Name="warning3" Tag="wall" Stroke="Red" StrokeThickness="3" Height="186" Width="1066" Canvas.Top="542" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
             <Button ToolTip="" Content="Подать заявку" Canvas.Left="50" Canvas.Top="750" Height="50" Width="320" Click="AddNewOrder" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30"/>
+            <TextBlock x:Name="OrderAdded" Text="Заявка добавлена" Canvas.Left="420" Canvas.Top="754" Height="42" Width="248" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden"/>
         </Canvas>
         <Canvas Name="previousOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Предыдушие заявки" Canvas.Left="50" Canvas.Top="146" Height="79" Width="289" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search2" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="302" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите номер, название или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="FindPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBlock x:Name="NoPreviousOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
         <Canvas Name="profile" Focusable="True" Opacity="1" Visibility="Hidden">
 

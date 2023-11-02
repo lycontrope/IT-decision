@@ -45,6 +45,10 @@ namespace IT_Решения
                 login.Visibility = Visibility.Hidden;
                 FindCurrentOrder(sender, e);
             }
+            else
+            {
+                IncorrectLoginOrPassword.Visibility = Visibility.Visible;
+            }
             connection.Close();
         }
         public void CloseAll()
@@ -98,7 +102,8 @@ namespace IT_Решения
             public string[] coloms;
         }
         private static tabel[] tabels;
-        public void ShowOrder(Canvas canvas, SqlDataReader reader, int i)
+        private List<TextBox> cells = new List<TextBox>();
+        public void ShowOrder(Canvas canvas, SqlDataReader reader, int i, List<TextBox> cells)
         {
             int n = 0;
             tabels[i].coloms = new string[7];
@@ -117,8 +122,10 @@ namespace IT_Решения
             Canvas.SetLeft(tabels[i].id, 50);
             Canvas.SetTop(tabels[i].id, 150 + (i + 1) * 80);
             tabels[i].id.Text = tabels[i].coloms[n];
-            n++;
+            cells.Add(tabels[i].id);
+            //cells[i * 7 + n] = tabels[i].id;
             canvas.Children.Add(tabels[i].id);
+            n++;
             tabels[i].date = new TextBox();
             tabels[i].date.Width = 100;
             tabels[i].date.Height = 80;
@@ -126,8 +133,10 @@ namespace IT_Решения
             Canvas.SetLeft(tabels[i].date, 90);
             Canvas.SetTop(tabels[i].date, 150 + (i + 1) * 80);
             tabels[i].date.Text = tabels[i].coloms[n];
-            n++;
+            cells.Add(tabels[i].date);
+            //cells[i * 7 + n] = tabels[i].date;
             canvas.Children.Add(tabels[i].date);
+            n++;
             tabels[i].equipment = new TextBox();
             tabels[i].equipment.Width = 240;
             tabels[i].equipment.Height = 80;
@@ -135,8 +144,9 @@ namespace IT_Решения
             Canvas.SetLeft(tabels[i].equipment, 190);
             Canvas.SetTop(tabels[i].equipment, 150 + (i + 1) * 80);
             tabels[i].equipment.Text = tabels[i].coloms[n];
-            n++;
+            cells.Add(tabels[i].equipment);
             canvas.Children.Add(tabels[i].equipment);
+            n++;
             tabels[i].problem = new TextBox();
             tabels[i].problem.Width = 240;
             tabels[i].problem.Height = 80;
@@ -144,8 +154,9 @@ namespace IT_Решения
             Canvas.SetLeft(tabels[i].problem, 430);
             Canvas.SetTop(tabels[i].problem, 150 + (i + 1) * 80);
             tabels[i].problem.Text = tabels[i].coloms[n];
-            n++;
+            cells.Add(tabels[i].problem);
             canvas.Children.Add(tabels[i].problem);
+            n++;
             tabels[i].description = new TextBox();
             tabels[i].description.Width = 240;
             tabels[i].description.Height = 80;
@@ -153,8 +164,9 @@ namespace IT_Решения
             Canvas.SetLeft(tabels[i].description, 670);
             Canvas.SetTop(tabels[i].description, 150 + (i + 1) * 80);
             tabels[i].description.Text = tabels[i].coloms[n];
-            n++;
+            cells.Add(tabels[i].description);
             canvas.Children.Add(tabels[i].description);
+            n++;
             tabels[i].author = new TextBox();
             tabels[i].author.Width = 240;
             tabels[i].author.Height = 80;
@@ -162,8 +174,9 @@ namespace IT_Решения
             Canvas.SetLeft(tabels[i].author, 910);
             Canvas.SetTop(tabels[i].author, 150 + (i + 1) * 80);
             tabels[i].author.Text = tabels[i].coloms[n];
-            n++;
+            cells.Add(tabels[i].author);
             canvas.Children.Add(tabels[i].author);
+            n++;
             tabels[i].status = new TextBox();
             tabels[i].status.Width = 150;
             tabels[i].status.Height = 80;
@@ -171,33 +184,65 @@ namespace IT_Решения
             Canvas.SetLeft(tabels[i].status, 1150);
             Canvas.SetTop(tabels[i].status, 150 + (i + 1) * 80);
             tabels[i].status.Text = tabels[i].coloms[n];
+            cells.Add(tabels[i].status);
             canvas.Children.Add(tabels[i].status);
         }
-        public void FindOrder(Canvas canvas, string slqExpressionWhere)
+        public void FindOrder(Canvas canvas, string slqExpressionWhere, TextBlock NoOrder, List<TextBox> cells, TextBox textBox)
         {
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlExpression = "";
-            if (search1.Text == "")
+            if (textBox.Text == "")
             {
-                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE status = {slqExpressionWhere}";
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE {slqExpressionWhere}";
+            }
+            else
+            {
+                //sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\')";
             }
             SqlCommand command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
             int count = (int)command.ExecuteScalar();
-            tabels = new tabel[count];
-
-            sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE status = {slqExpressionWhere}";
-            command = new SqlCommand(sqlExpression, connection);
-            SqlDataReader reader = command.ExecuteReader();
-            int i = 0;
-            if (reader.HasRows)
+            if (cells != null)
             {
-                while (reader.Read())
+                foreach(TextBox text in cells)//удаление старой
                 {
-                    ShowOrder(canvas, reader, i);
-                    i++;
+                    canvas.Children.Remove(text);
                 }
+                //cells.Clear();
+            }
+            if(count > 0)
+            {
+                //cells = new TextBox[count * 7];
+                NoOrder.Visibility = Visibility.Hidden;
+                tabels = new tabel[count];
+
+                if (textBox.Text == "")
+                {
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE {slqExpressionWhere}";
+                }
+                else
+                {
+                    //sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\')";
+                }
+
+                command = new SqlCommand(sqlExpression, connection);
+                SqlDataReader reader = command.ExecuteReader();
+                int i = 0;
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ShowOrder(canvas, reader, i, cells);
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                NoOrder.Visibility = Visibility.Visible;
             }
             //Convert.ToString(command.ExecuteScalar());
             //SqlDataAdapter dataAdp = new SqlDataAdapter(command);
@@ -208,21 +253,50 @@ namespace IT_Решения
         }
         public void FindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(currentOrder, "\'в работе\' OR status = \'в ожидании\'");
+            FindOrder(currentOrder, "status = \'в работе\' OR status = \'в ожидании\'", NoCurrentOrders, cells, search1);
         }
         public void FindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(previousOrder, "\'выполнено\'");
+            FindOrder(previousOrder, "status = \'выполнено\'", NoPreviousOrders, cells, search2);
         }
         public void AddNewOrder(object sender, RoutedEventArgs e)
         {
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            DateTime dateTime = DateTime.Now;
-            string sqlExpression = $"INSERT INTO [dbo].[orders] VALUES (\'{dateTime.Year}-{dateTime.Month}-{dateTime.Day}\', \'{equipmentName.Text}\',\'{problemName.Text}\',\'{descriptionName.Text}\',\'{username.Text}\', \'в ожидании\')";
-            SqlCommand command = new SqlCommand(sqlExpression, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
+            OrderAdded.Visibility = Visibility.Hidden;
+            if (equipmentName.Text == "")
+            {
+                warning1.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                warning1.Visibility = Visibility.Hidden;
+            }
+            if (problemName.Text == "")
+            {
+                warning2.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                warning2.Visibility = Visibility.Hidden;
+            }
+            if (descriptionName.Text == "")
+            {
+                warning3.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                warning3.Visibility = Visibility.Hidden;
+            }
+            if(equipmentName.Text != "" && problemName.Text != "" && descriptionName.Text != "")
+            {
+                SqlConnection connection = new SqlConnection(connectionString);
+                connection.Open();
+                DateTime dateTime = DateTime.Now;
+                string sqlExpression = $"INSERT INTO [dbo].[orders] VALUES (\'{dateTime.Year}-{dateTime.Month}-{dateTime.Day}\', \'{equipmentName.Text}\',\'{problemName.Text}\',\'{descriptionName.Text}\',\'{username.Text}\', \'в ожидании\')";
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                OrderAdded.Visibility = Visibility.Visible;
+            }
         }
     }
 }
