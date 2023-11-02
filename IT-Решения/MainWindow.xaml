@@ -13,7 +13,7 @@
         <Rectangle x:Name="wall4" Tag="wall" Stroke="#FFC5F067" StrokeThickness="100" Height="110" Width="1350" RenderTransformOrigin="0.5,0.5" Opacity="0.6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         <Rectangle x:Name="wall3" Tag="wall" Stroke="DarkSlateGray" StrokeThickness="3" Height="3" Width="1350" Canvas.Top="110" RenderTransformOrigin="0.5,0.5" Opacity="0.6" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <Canvas Name="login" Focusable="True" Opacity="1">
-            <TextBlock Text="Логин" Canvas.Left="500" Canvas.Top="350" FontSize="20"/>
+            <TextBlock Text="Логин" Canvas.Left="500" Canvas.Top="350" FontSize="20" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="60" />
             <TextBlock Text="Пароль" Canvas.Left="500" Canvas.Top="430" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="20"/>
             <TextBox x:Name="username" Height="50" Canvas.Left="500" TextWrapping="Wrap" Text="" Canvas.Top="380" Width="350" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBox x:Name="password" Height="50" Canvas.Left="500" TextWrapping="Wrap" Text="" Canvas.Top="460" Width="350" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"/>
@@ -25,12 +25,12 @@
             <Button ToolTip="" Content="Прошлые заявки" Canvas.Left="700" Canvas.Top="30" Height="50" Width="275" Click="PreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <Button ToolTip="" Content="Профиль" Canvas.Left="1025" Canvas.Top="30" Height="50" Width="275" Click="Profile" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
         </Canvas>
-        <Canvas Name="currentOrder" Focusable="True" Opacity="1" Visibility="Visible">
-            <TextBlock Text="Текущие заявки" Canvas.Left="50" Canvas.Top="146" Height="79" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Canvas Name="currentOrder" Focusable="True" Opacity="1" Visibility="Hidden">
+            <TextBlock Text="Текущие заявки" Canvas.Left="50" Canvas.Top="150" Height="40" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search1" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="302" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите номер, название или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="FindCurrentOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <Grid>
+            <Grid Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="220" />
                     <RowDefinition/>
@@ -42,12 +42,12 @@
         <Canvas Name="newOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Заполниете все поля" Canvas.Left="50" Canvas.Top="145" Height="40" Width="320" TextAlignment="Center" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             <TextBlock Text="Оборудывание" Canvas.Left="59" Canvas.Top="215" Height="78" Width="220" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="названиеОборудывания" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="265" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBox x:Name="equipmentName" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="265" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock Text="Тип неисправности" Canvas.Left="59" Canvas.Top="355" Height="78" Width="276" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="типНеисправности" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="405" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBox x:Name="problemName" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="405" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock Text="Описание проблемы" Canvas.Left="59" Canvas.Top="495" Height="78" Width="288" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="описаниеПроблемы" Height="200" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="545" Width="1060" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30"/>
-            <Button ToolTip="" Content="Подать заявку" Canvas.Left="50" Canvas.Top="800" Height="50" Width="320" Click="Init1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30"/>
+            <TextBox x:Name="descriptionName" Height="180" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="545" Width="1060" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30"/>
+            <Button ToolTip="" Content="Подать заявку" Canvas.Left="50" Canvas.Top="750" Height="50" Width="320" Click="AddNewOrder" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30"/>
         </Canvas>
         <Canvas Name="previousOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Предыдушие заявки" Canvas.Left="50" Canvas.Top="146" Height="79" Width="289" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
