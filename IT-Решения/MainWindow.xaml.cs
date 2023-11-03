@@ -37,13 +37,41 @@ namespace IT_Решения
             answer = answer.Trim();
             if (answer == $"{password.Text}")
             {
-                currentOrder.Visibility = Visibility.Visible;
-                Top.Visibility = Visibility.Visible;
-                newOrder.Visibility = Visibility.Hidden;
-                previousOrder.Visibility = Visibility.Hidden;
-                profile.Visibility = Visibility.Hidden;
-                login.Visibility = Visibility.Hidden;
-                FindCurrentOrder(sender, e);
+                sqlExpression = $"SELECT post FROM [dbo].[entry] WHERE login = \'{Username}\'";
+                command = new SqlCommand(sqlExpression, connection);
+                command.ExecuteNonQuery();
+                answer = Convert.ToString(command.ExecuteScalar());
+                answer = answer.Trim();
+                if (answer == "user")
+                {
+                    userCurrentOrder.Visibility = Visibility.Visible;
+                    userTop.Visibility = Visibility.Visible;
+                    newOrder.Visibility = Visibility.Hidden;
+                    userPreviousOrder.Visibility = Visibility.Hidden;
+                    userProfile.Visibility = Visibility.Hidden;
+                    login.Visibility = Visibility.Hidden;
+                    UserFindCurrentOrder(sender, e);
+                }
+                else if (answer == "admin")
+                {
+                    adminCurrentOrder.Visibility = Visibility.Visible;
+                    adminTop.Visibility = Visibility.Visible;
+                    
+                    adminPreviousOrder.Visibility = Visibility.Hidden;
+                    adminProfile.Visibility = Visibility.Hidden;
+                    login.Visibility = Visibility.Hidden;
+                    UserFindCurrentOrder(sender, e);
+                }
+                else if (answer == "worker")
+                {
+                    workerCurrentOrder.Visibility = Visibility.Visible;
+                    workerTop.Visibility = Visibility.Visible;
+
+                    workerPreviousOrder.Visibility = Visibility.Hidden;
+                    workerProfile.Visibility = Visibility.Hidden;
+                    login.Visibility = Visibility.Hidden;
+                    UserFindCurrentOrder(sender, e);
+                }
             }
             else
             {
@@ -51,44 +79,83 @@ namespace IT_Решения
             }
             connection.Close();
         }
-        public void CloseAll()
-        {
-            Top.Opacity = 0;
-            currentOrder.Opacity = 0;
-            newOrder.Opacity = 0;
-            previousOrder.Opacity = 0;
-            profile.Opacity = 0;
-
-        }
         public void NewOrder(object sender, RoutedEventArgs e)
         {
-            currentOrder.Visibility = Visibility.Hidden;
+            userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Visible;
-            previousOrder.Visibility = Visibility.Hidden;
-            profile.Visibility = Visibility.Hidden;
+            userPreviousOrder.Visibility = Visibility.Hidden;
+            userProfile.Visibility = Visibility.Hidden;
         }
-        public void CurrentOrder(object sender, RoutedEventArgs e)
+        public void UserCurrentOrder(object sender, RoutedEventArgs e)
         {
-            currentOrder.Visibility = Visibility.Visible;
+            userCurrentOrder.Visibility = Visibility.Visible;
             newOrder.Visibility = Visibility.Hidden;
-            previousOrder.Visibility = Visibility.Hidden;
-            profile.Visibility = Visibility.Hidden;
-            FindCurrentOrder(sender, e);
+            userPreviousOrder.Visibility = Visibility.Hidden;
+            userProfile.Visibility = Visibility.Hidden;
+            UserFindCurrentOrder(sender, e);
         }
-        public void PreviousOrder(object sender, RoutedEventArgs e)
+        public void UserPreviousOrder(object sender, RoutedEventArgs e)
         {
-            currentOrder.Visibility = Visibility.Hidden;
+            userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Hidden;
-            previousOrder.Visibility = Visibility.Visible;
-            profile.Visibility = Visibility.Hidden;
-            FindPreviousOrder(sender, e);
+            userPreviousOrder.Visibility = Visibility.Visible;
+            userProfile.Visibility = Visibility.Hidden;
+            UserFindPreviousOrder(sender, e);
         }
-        public void Profile(object sender, RoutedEventArgs e)
+        public void UserProfile(object sender, RoutedEventArgs e)
         {
-            currentOrder.Visibility = Visibility.Hidden;
-            newOrder.Visibility = Visibility.Hidden;
-            previousOrder.Visibility = Visibility.Hidden;
-            profile.Visibility = Visibility.Visible;
+            userCurrentOrder.Visibility = Visibility.Hidden;
+            //newOrder.Visibility = Visibility.Hidden;
+            userPreviousOrder.Visibility = Visibility.Hidden;
+            userProfile.Visibility = Visibility.Visible;
+        }
+
+        public void AdminCurrentOrder(object sender, RoutedEventArgs e)
+        {
+            adminCurrentOrder.Visibility = Visibility.Visible;
+            //newOrder.Visibility = Visibility.Hidden;
+            adminPreviousOrder.Visibility = Visibility.Hidden;
+            adminProfile.Visibility = Visibility.Hidden;
+            AdminFindCurrentOrder(sender, e);
+        }
+        public void AdminPreviousOrder(object sender, RoutedEventArgs e)
+        {
+            adminCurrentOrder.Visibility = Visibility.Hidden;
+            //newOrder.Visibility = Visibility.Hidden;
+            adminPreviousOrder.Visibility = Visibility.Visible;
+            adminProfile.Visibility = Visibility.Hidden;
+            AdminFindPreviousOrder(sender, e);
+        }
+        public void AdminProfile(object sender, RoutedEventArgs e)
+        {
+            adminCurrentOrder.Visibility = Visibility.Hidden;
+            //newOrder.Visibility = Visibility.Hidden;
+            adminPreviousOrder.Visibility = Visibility.Hidden;
+            adminProfile.Visibility = Visibility.Visible;
+        }
+
+        public void WorkerCurrentOrder(object sender, RoutedEventArgs e)
+        {
+            workerCurrentOrder.Visibility = Visibility.Visible;
+            //newOrder.Visibility = Visibility.Hidden;
+            workerPreviousOrder.Visibility = Visibility.Hidden;
+            workerProfile.Visibility = Visibility.Hidden;
+            WorkerFindCurrentOrder(sender, e);
+        }
+        public void WorkerPreviousOrder(object sender, RoutedEventArgs e)
+        {
+            workerCurrentOrder.Visibility = Visibility.Hidden;
+            //newOrder.Visibility = Visibility.Hidden;
+            workerPreviousOrder.Visibility = Visibility.Visible;
+            workerProfile.Visibility = Visibility.Hidden;
+            WorkerFindPreviousOrder(sender, e);
+        }
+        public void WorkerProfile(object sender, RoutedEventArgs e)
+        {
+            workerCurrentOrder.Visibility = Visibility.Hidden;
+            //newOrder.Visibility = Visibility.Hidden;
+            workerPreviousOrder.Visibility = Visibility.Hidden;
+            workerProfile.Visibility = Visibility.Visible;
         }
         public struct tabel
         {
@@ -103,10 +170,10 @@ namespace IT_Решения
         }
         private static tabel[] tabels;
         private List<TextBox> cells = new List<TextBox>();
-        public void ShowOrder(Canvas canvas, SqlDataReader reader, int i, List<TextBox> cells)
+        public void ShowOrder(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
         {
             int n = 0;
-            tabels[i].coloms = new string[7];
+            tabels[i].coloms = new string[m];
             for (int j = 0; j < tabels[i].coloms.Length; j++)
             {
                 tabels[i].coloms[j] = Convert.ToString(reader.GetValue(j));
@@ -199,7 +266,7 @@ namespace IT_Решения
             else
             {
                 //sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
-                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\')";
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND ({slqExpressionWhere})";
             }
             SqlCommand command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
@@ -225,7 +292,7 @@ namespace IT_Решения
                 else
                 {
                     //sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
-                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\')";
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND ({slqExpressionWhere})";
                 }
 
                 command = new SqlCommand(sqlExpression, connection);
@@ -235,7 +302,7 @@ namespace IT_Решения
                 {
                     while (reader.Read())
                     {
-                        ShowOrder(canvas, reader, i, cells);
+                        ShowOrder(canvas, reader, i, 7, cells);
                         i++;
                     }
                 }
@@ -251,13 +318,13 @@ namespace IT_Решения
             //currentOrderData.ItemsSource = dt.DefaultView;
             connection.Close();
         }
-        public void FindCurrentOrder(object sender, RoutedEventArgs e)
+        public void UserFindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(currentOrder, "status = \'в работе\' OR status = \'в ожидании\'", NoCurrentOrders, cells, search1);
+            FindOrder(userCurrentOrder, "status = \'в работе\' OR status = \'в ожидании\'", userNoCurrentOrders, cells, search1);
         }
-        public void FindPreviousOrder(object sender, RoutedEventArgs e)
+        public void UserFindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(previousOrder, "status = \'выполнено\'", NoPreviousOrders, cells, search2);
+            FindOrder(userPreviousOrder, "status = \'выполнено\'", userNoPreviousOrders, cells, search2);
         }
         public void AddNewOrder(object sender, RoutedEventArgs e)
         {
@@ -297,6 +364,81 @@ namespace IT_Решения
                 connection.Close();
                 OrderAdded.Visibility = Visibility.Visible;
             }
+        }
+
+        public void FindWorkers(Canvas canvas, TextBlock NoOrder, List<TextBox> cells, TextBox textBox)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlExpression = "";
+            if (textBox.Text == "")
+            {
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[workers]";
+            }
+            else
+            {
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[workers] WHERE (equipment LIKE \'%{search7.Text}%\' OR problem LIKE \'%{search7.Text}%\' OR description LIKE \'%{search7.Text}%\' OR author LIKE \'%{search7.Text}%\')";
+            }
+            SqlCommand command = new SqlCommand(sqlExpression, connection);
+            command.ExecuteNonQuery();
+            int count = (int)command.ExecuteScalar();
+            if (cells != null)
+            {
+                foreach (TextBox text in cells)//удаление старой
+                {
+                    canvas.Children.Remove(text);
+                }
+            }
+            if (count > 0)
+            {
+                NoWorkers.Visibility = Visibility.Hidden;
+                tabels = new tabel[count];
+                if (textBox.Text == "")
+                {
+                    sqlExpression = $"SELECT * FROM [dbo].[workers]";
+                }
+                else
+                {
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{search7.Text}%\' OR problem LIKE \'%{search7.Text}%\' OR description LIKE \'%{search7.Text}%\' OR author LIKE \'%{search7.Text}%\')";
+                }
+                command = new SqlCommand(sqlExpression, connection);
+                SqlDataReader reader = command.ExecuteReader();
+                int i = 0;
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ShowOrder(canvas, reader, i, 7, cells);
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                NoWorkers.Visibility = Visibility.Visible;
+            }
+            connection.Close();
+        }
+        public void ShowWorkers()
+        {
+            FindWorkers(Workers, NoWorkers, cells, search7);
+        }
+        public void AdminFindCurrentOrder(object sender, RoutedEventArgs e)
+        {
+            FindOrder(adminCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\') ORDER BY status ASC", adminNoCurrentOrders, cells, search3);
+        }
+        public void AdminFindPreviousOrder(object sender, RoutedEventArgs e)
+        {
+            FindOrder(adminPreviousOrder, "(status = \'выполнено\')", adminNoPreviousOrders, cells, search4);
+        }
+
+        public void WorkerFindCurrentOrder(object sender, RoutedEventArgs e)
+        {
+            FindOrder(workerCurrentOrder, "status = \'в работе\' OR status = \'в ожидании\'", workerNoCurrentOrders, cells, search5);
+        }
+        public void WorkerFindPreviousOrder(object sender, RoutedEventArgs e)
+        {
+            FindOrder(workerPreviousOrder, "status = \'выполнено\'", workerNoPreviousOrders, cells, search6);
         }
     }
 }
