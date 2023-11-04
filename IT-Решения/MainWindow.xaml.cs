@@ -60,7 +60,7 @@ namespace IT_Решения
                     adminPreviousOrder.Visibility = Visibility.Hidden;
                     adminProfile.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
-                    UserFindCurrentOrder(sender, e);
+                    AdminFindCurrentOrder(sender, e);
                 }
                 else if (answer == "worker")
                 {
@@ -70,7 +70,7 @@ namespace IT_Решения
                     workerPreviousOrder.Visibility = Visibility.Hidden;
                     workerProfile.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
-                    UserFindCurrentOrder(sender, e);
+                    WorkerFindCurrentOrder(sender, e);
                 }
             }
             else
@@ -109,11 +109,18 @@ namespace IT_Решения
             userPreviousOrder.Visibility = Visibility.Hidden;
             userProfile.Visibility = Visibility.Visible;
         }
-
+        public void AdminWorkers(object sender, RoutedEventArgs e)
+        {
+            ShowWorkers(sender, e);
+            adminCurrentOrder.Visibility = Visibility.Hidden;
+            Workers.Visibility = Visibility.Visible;
+            adminPreviousOrder.Visibility = Visibility.Hidden;
+            adminProfile.Visibility = Visibility.Hidden;
+        }
         public void AdminCurrentOrder(object sender, RoutedEventArgs e)
         {
             adminCurrentOrder.Visibility = Visibility.Visible;
-            //newOrder.Visibility = Visibility.Hidden;
+            Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
             adminProfile.Visibility = Visibility.Hidden;
             AdminFindCurrentOrder(sender, e);
@@ -121,7 +128,7 @@ namespace IT_Решения
         public void AdminPreviousOrder(object sender, RoutedEventArgs e)
         {
             adminCurrentOrder.Visibility = Visibility.Hidden;
-            //newOrder.Visibility = Visibility.Hidden;
+            Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Visible;
             adminProfile.Visibility = Visibility.Hidden;
             AdminFindPreviousOrder(sender, e);
@@ -129,7 +136,7 @@ namespace IT_Решения
         public void AdminProfile(object sender, RoutedEventArgs e)
         {
             adminCurrentOrder.Visibility = Visibility.Hidden;
-            //newOrder.Visibility = Visibility.Hidden;
+            Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
             adminProfile.Visibility = Visibility.Visible;
         }
@@ -166,11 +173,12 @@ namespace IT_Решения
             public TextBox description;
             public TextBox author;
             public TextBox status;
+            public TextBox workers;
             public string[] coloms;
         }
         private static tabel[] tabels;
         private List<TextBox> cells = new List<TextBox>();
-        public void ShowOrder(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
+        public void ShowOrder(Canvas canvas, SqlDataReader reader, SqlDataReader readerWorkers, int i, int m, List<TextBox> cells)
         {
             int n = 0;
             tabels[i].coloms = new string[m];
@@ -182,10 +190,12 @@ namespace IT_Решения
             {
                 tabels[i].coloms[j] = tabels[i].coloms[j].Trim();
             }
-            tabels[i].id = new TextBox();
-            tabels[i].id.Width = 40;
-            tabels[i].id.Height = 80;
-            tabels[i].id.FontSize = 20;
+            tabels[i].id = new TextBox
+            {
+                Width = 40,
+                Height = 80,
+                FontSize = 20
+            };
             Canvas.SetLeft(tabels[i].id, 50);
             Canvas.SetTop(tabels[i].id, 150 + (i + 1) * 80);
             tabels[i].id.Text = tabels[i].coloms[n];
@@ -193,10 +203,12 @@ namespace IT_Решения
             //cells[i * 7 + n] = tabels[i].id;
             canvas.Children.Add(tabels[i].id);
             n++;
-            tabels[i].date = new TextBox();
-            tabels[i].date.Width = 100;
-            tabels[i].date.Height = 80;
-            tabels[i].date.FontSize = 20;
+            tabels[i].date = new TextBox
+            {
+                Width = 100,
+                Height = 80,
+                FontSize = 20
+            };
             Canvas.SetLeft(tabels[i].date, 90);
             Canvas.SetTop(tabels[i].date, 150 + (i + 1) * 80);
             tabels[i].date.Text = tabels[i].coloms[n];
@@ -204,69 +216,104 @@ namespace IT_Решения
             //cells[i * 7 + n] = tabels[i].date;
             canvas.Children.Add(tabels[i].date);
             n++;
-            tabels[i].equipment = new TextBox();
-            tabels[i].equipment.Width = 240;
-            tabels[i].equipment.Height = 80;
-            tabels[i].equipment.FontSize = 20;
+            tabels[i].equipment = new TextBox
+            {
+                Width = 192,
+                Height = 80,
+                FontSize = 20
+            };
             Canvas.SetLeft(tabels[i].equipment, 190);
             Canvas.SetTop(tabels[i].equipment, 150 + (i + 1) * 80);
             tabels[i].equipment.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].equipment);
             canvas.Children.Add(tabels[i].equipment);
             n++;
-            tabels[i].problem = new TextBox();
-            tabels[i].problem.Width = 240;
-            tabels[i].problem.Height = 80;
-            tabels[i].problem.FontSize = 20;
-            Canvas.SetLeft(tabels[i].problem, 430);
+            tabels[i].problem = new TextBox
+            {
+                Width = 192,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(tabels[i].problem, 382);
             Canvas.SetTop(tabels[i].problem, 150 + (i + 1) * 80);
             tabels[i].problem.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].problem);
             canvas.Children.Add(tabels[i].problem);
             n++;
-            tabels[i].description = new TextBox();
-            tabels[i].description.Width = 240;
-            tabels[i].description.Height = 80;
-            tabels[i].description.FontSize = 20;
-            Canvas.SetLeft(tabels[i].description, 670);
+            tabels[i].description = new TextBox
+            {
+                Width = 192,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(tabels[i].description, 574);
             Canvas.SetTop(tabels[i].description, 150 + (i + 1) * 80);
             tabels[i].description.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].description);
             canvas.Children.Add(tabels[i].description);
             n++;
-            tabels[i].author = new TextBox();
-            tabels[i].author.Width = 240;
-            tabels[i].author.Height = 80;
-            tabels[i].author.FontSize = 20;
-            Canvas.SetLeft(tabels[i].author, 910);
+            tabels[i].author = new TextBox
+            {
+                Width = 192,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(tabels[i].author, 766);
             Canvas.SetTop(tabels[i].author, 150 + (i + 1) * 80);
             tabels[i].author.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].author);
             canvas.Children.Add(tabels[i].author);
             n++;
-            tabels[i].status = new TextBox();
-            tabels[i].status.Width = 150;
-            tabels[i].status.Height = 80;
-            tabels[i].status.FontSize = 20;
-            Canvas.SetLeft(tabels[i].status, 1150);
+            tabels[i].status = new TextBox
+            {
+                Width = 150,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(tabels[i].status, 958);
             Canvas.SetTop(tabels[i].status, 150 + (i + 1) * 80);
             tabels[i].status.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].status);
             canvas.Children.Add(tabels[i].status);
+
+            ShowWorkersInOrders(canvas, readerWorkers, i, m, cells);
         }
-        public void FindOrder(Canvas canvas, string slqExpressionWhere, TextBlock NoOrder, List<TextBox> cells, TextBox textBox)
+        public void ShowWorkersInOrders(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
+        {
+            tabels[i].coloms[m - 1] = " ";
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    tabels[i].coloms[m-1] = tabels[i].coloms[m - 1].Insert(tabels[i].coloms[m - 1].Length, $"{Convert.ToString(reader.GetValue(0))}, ");
+                    tabels[i].coloms[m - 1] = tabels[i].coloms[m - 1].Trim();
+                }
+            }
+            tabels[i].workers = new TextBox
+            {
+                Width = 142,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(tabels[i].workers, 1108);
+            Canvas.SetTop(tabels[i].workers, 150 + (i + 1) * 80);
+            tabels[i].workers.Text = tabels[i].coloms[m-1];
+            cells.Add(tabels[i].workers);
+            canvas.Children.Add(tabels[i].workers);
+        }
+        public void FindOrder(Canvas canvas, string slqExpressionWhere, string slqExpressionOrder, TextBlock NoOrder, List<TextBox> cells, TextBox textBox)
         {
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlExpression = "";
             if (textBox.Text == "")
-            {
+            {             
                 sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE {slqExpressionWhere}";
             }
             else
             {
                 //sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
-                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND ({slqExpressionWhere})";
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND {slqExpressionWhere}";
             }
             SqlCommand command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
@@ -287,22 +334,26 @@ namespace IT_Решения
 
                 if (textBox.Text == "")
                 {
-                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE {slqExpressionWhere}";
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE {slqExpressionWhere} {slqExpressionOrder}";
                 }
                 else
                 {
                     //sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
-                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND ({slqExpressionWhere})";
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND {slqExpressionWhere} {slqExpressionOrder}";
                 }
 
                 command = new SqlCommand(sqlExpression, connection);
                 SqlDataReader reader = command.ExecuteReader();
+                SqlDataReader tempReader;
                 int i = 0;
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        ShowOrder(canvas, reader, i, 7, cells);
+                        sqlExpression = $"SELECT name, surname FROM [dbo].[workers] WHERE orderId = {Convert.ToString(reader.GetValue(0))}";
+                        command = new SqlCommand(sqlExpression, connection);
+                        tempReader = command.ExecuteReader();
+                        ShowOrder(canvas, reader, tempReader, i, 7, cells);
                         i++;
                     }
                 }
@@ -320,11 +371,11 @@ namespace IT_Решения
         }
         public void UserFindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(userCurrentOrder, "status = \'в работе\' OR status = \'в ожидании\'", userNoCurrentOrders, cells, search1);
+            FindOrder(userCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\')", "", userNoCurrentOrders, cells, search1);
         }
         public void UserFindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(userPreviousOrder, "status = \'выполнено\'", userNoPreviousOrders, cells, search2);
+            FindOrder(userPreviousOrder, "(status = \'выполнено\')", "", userNoPreviousOrders, cells, search2);
         }
         public void AddNewOrder(object sender, RoutedEventArgs e)
         {
@@ -365,8 +416,102 @@ namespace IT_Решения
                 OrderAdded.Visibility = Visibility.Visible;
             }
         }
-
-        public void FindWorkers(Canvas canvas, TextBlock NoOrder, List<TextBox> cells, TextBox textBox)
+        public struct WorkerTabel
+        {
+            public TextBox id;
+            public TextBox name;
+            public TextBox surname;
+            public TextBox status;
+            public TextBox profession;
+            public TextBox projectId;
+            public string[] coloms;
+        }
+        private static WorkerTabel[] WorkerTabels;
+        public void ShowWorker(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
+        {
+            int n = 0;
+            WorkerTabels[i].coloms = new string[m];
+            for (int j = 0; j < WorkerTabels[i].coloms.Length; j++)
+            {
+                WorkerTabels[i].coloms[j] = Convert.ToString(reader.GetValue(j));
+            }
+            for (int j = 0; j < WorkerTabels[i].coloms.Length; j++)
+            {
+                WorkerTabels[i].coloms[j] = WorkerTabels[i].coloms[j].Trim();
+            }
+            WorkerTabels[i].id = new TextBox
+            {
+                Width = 100,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(WorkerTabels[i].id, 100);
+            Canvas.SetTop(WorkerTabels[i].id, 150 + (i + 1) * 80);
+            WorkerTabels[i].id.Text = WorkerTabels[i].coloms[n];
+            cells.Add(WorkerTabels[i].id);
+            canvas.Children.Add(WorkerTabels[i].id);
+            n++;
+            WorkerTabels[i].name = new TextBox
+            {
+                Width = 250,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(WorkerTabels[i].name, 200);
+            Canvas.SetTop(WorkerTabels[i].name, 150 + (i + 1) * 80);
+            WorkerTabels[i].name.Text = WorkerTabels[i].coloms[n];
+            cells.Add(WorkerTabels[i].name);
+            canvas.Children.Add(WorkerTabels[i].name);
+            n++;
+            WorkerTabels[i].surname = new TextBox
+            {
+                Width = 250,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(WorkerTabels[i].surname, 450);
+            Canvas.SetTop(WorkerTabels[i].surname, 150 + (i + 1) * 80);
+            WorkerTabels[i].surname.Text = WorkerTabels[i].coloms[n];
+            cells.Add(WorkerTabels[i].surname);
+            canvas.Children.Add(WorkerTabels[i].surname);
+            n++;
+            WorkerTabels[i].status = new TextBox
+            {
+                Width = 150,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(WorkerTabels[i].status, 1050);
+            Canvas.SetTop(WorkerTabels[i].status, 150 + (i + 1) * 80);
+            WorkerTabels[i].status.Text = WorkerTabels[i].coloms[n];
+            cells.Add(WorkerTabels[i].status);
+            canvas.Children.Add(WorkerTabels[i].status);
+            n++;
+            WorkerTabels[i].profession = new TextBox
+            {
+                Width = 250,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(WorkerTabels[i].profession, 700);
+            Canvas.SetTop(WorkerTabels[i].profession, 150 + (i + 1) * 80);
+            WorkerTabels[i].profession.Text = WorkerTabels[i].coloms[n];
+            cells.Add(WorkerTabels[i].profession);
+            canvas.Children.Add(WorkerTabels[i].profession);
+            n++;
+            WorkerTabels[i].projectId = new TextBox
+            {
+                Width = 100,
+                Height = 80,
+                FontSize = 20
+            };
+            Canvas.SetLeft(WorkerTabels[i].projectId, 950);
+            Canvas.SetTop(WorkerTabels[i].projectId, 150 + (i + 1) * 80);
+            WorkerTabels[i].projectId.Text = WorkerTabels[i].coloms[n];
+            cells.Add(WorkerTabels[i].projectId);
+            canvas.Children.Add(WorkerTabels[i].projectId);
+        }
+        public void FindWorkers(Canvas thisCanvas, Canvas canvas, List<TextBox> cells, TextBox textBox)
         {
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -377,7 +522,7 @@ namespace IT_Решения
             }
             else
             {
-                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[workers] WHERE (equipment LIKE \'%{search7.Text}%\' OR problem LIKE \'%{search7.Text}%\' OR description LIKE \'%{search7.Text}%\' OR author LIKE \'%{search7.Text}%\')";
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[workers] WHERE (status LIKE \'%{search7.Text}%\' OR profession LIKE \'%{search7.Text}%\' OR projectId LIKE \'%{search7.Text}%\' OR name LIKE \'%{search7.Text}%\' OR surname LIKE \'%{search7.Text}%\' OR projectId LIKE \'%{search7.Text}%\')";
             }
             SqlCommand command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
@@ -392,14 +537,14 @@ namespace IT_Решения
             if (count > 0)
             {
                 NoWorkers.Visibility = Visibility.Hidden;
-                tabels = new tabel[count];
+                WorkerTabels = new WorkerTabel[count];
                 if (textBox.Text == "")
                 {
                     sqlExpression = $"SELECT * FROM [dbo].[workers]";
                 }
                 else
                 {
-                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{search7.Text}%\' OR problem LIKE \'%{search7.Text}%\' OR description LIKE \'%{search7.Text}%\' OR author LIKE \'%{search7.Text}%\')";
+                    sqlExpression = $"SELECT * FROM [dbo].[workers] WHERE (status LIKE \'%{search7.Text}%\' OR profession LIKE \'%{search7.Text}%\' OR projectId LIKE \'%{search7.Text}%\' OR name LIKE \'%{search7.Text}%\' OR surname LIKE \'%{search7.Text}%\' OR projectId LIKE \'%{search7.Text}%\')";
                 }
                 command = new SqlCommand(sqlExpression, connection);
                 SqlDataReader reader = command.ExecuteReader();
@@ -408,7 +553,7 @@ namespace IT_Решения
                 {
                     while (reader.Read())
                     {
-                        ShowOrder(canvas, reader, i, 7, cells);
+                        ShowWorker(thisCanvas, reader, i, 6, cells);
                         i++;
                     }
                 }
@@ -419,26 +564,33 @@ namespace IT_Решения
             }
             connection.Close();
         }
-        public void ShowWorkers()
+        public void ShowWorkers(object sender, RoutedEventArgs e)
         {
-            FindWorkers(Workers, NoWorkers, cells, search7);
+            if(adminCurrentOrder.Visibility == Visibility.Visible)
+            {
+                FindWorkers(Workers, adminCurrentOrder, cells, search7);
+            }
+            else if(adminPreviousOrder.Visibility == Visibility.Visible)
+            {
+                FindWorkers(Workers, adminPreviousOrder, cells, search7);
+            }
         }
         public void AdminFindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(adminCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\') ORDER BY status ASC", adminNoCurrentOrders, cells, search3);
+            FindOrder(adminCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\')", "ORDER BY status ASC", adminNoCurrentOrders, cells, search3);
         }
         public void AdminFindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(adminPreviousOrder, "(status = \'выполнено\')", adminNoPreviousOrders, cells, search4);
+            FindOrder(adminPreviousOrder, "(status = \'выполнено\')", "", adminNoPreviousOrders, cells, search4);
         }
 
         public void WorkerFindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(workerCurrentOrder, "status = \'в работе\' OR status = \'в ожидании\'", workerNoCurrentOrders, cells, search5);
+            FindOrder(workerCurrentOrder, "status = \'в работе\' OR status = \'в ожидании\'", "", workerNoCurrentOrders, cells, search5);
         }
         public void WorkerFindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(workerPreviousOrder, "status = \'выполнено\'", workerNoPreviousOrders, cells, search6);
+            FindOrder(workerPreviousOrder, "status = \'выполнено\'", "", workerNoPreviousOrders, cells, search6);
         }
     }
 }
