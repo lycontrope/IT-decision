@@ -15,17 +15,19 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
 using System.Runtime.Remoting.Messaging;
+using System.Windows.Media.Animation;
+using System.Windows.Markup;
 
 namespace IT_Решения
 {
     public partial class MainWindow : Window
     {
-        string connectionString = @"Server=26.97.227.1, 1433; Database=SP02; Uid=sa; Pwd=123qwe;";// 192.168.0.166  26.97.227.1  Trusted_Connection=True; TrustServerCertificate=True; 
+        string connectionString = @"Server=26.97.227.1, 1433; Database=SP02; Uid=sa; Pwd=123qwe;";// 192.168.0.166  26.97.227.1  Trusted_Connection=True; TrustServerCertificate=True;  20
         public MainWindow()
         {
             InitializeComponent();
         }
-        public void Login(object sender, RoutedEventArgs e)
+        public void Login(object sender, RoutedEventArgs e)//вход проверка логин пароль
         {
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -58,7 +60,7 @@ namespace IT_Решения
                     adminTop.Visibility = Visibility.Visible;
                     
                     adminPreviousOrder.Visibility = Visibility.Hidden;
-                    adminProfile.Visibility = Visibility.Hidden;
+                    Stats.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
                     AdminFindCurrentOrder(sender, e);
                 }
@@ -105,7 +107,7 @@ namespace IT_Решения
         public void UserProfile(object sender, RoutedEventArgs e)
         {
             userCurrentOrder.Visibility = Visibility.Hidden;
-            //newOrder.Visibility = Visibility.Hidden;
+            newOrder.Visibility = Visibility.Hidden;
             userPreviousOrder.Visibility = Visibility.Hidden;
             userProfile.Visibility = Visibility.Visible;
         }
@@ -115,14 +117,14 @@ namespace IT_Решения
             adminCurrentOrder.Visibility = Visibility.Hidden;
             Workers.Visibility = Visibility.Visible;
             adminPreviousOrder.Visibility = Visibility.Hidden;
-            adminProfile.Visibility = Visibility.Hidden;
+            Stats.Visibility = Visibility.Hidden;
         }
         public void AdminCurrentOrder(object sender, RoutedEventArgs e)
         {
             adminCurrentOrder.Visibility = Visibility.Visible;
             Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
-            adminProfile.Visibility = Visibility.Hidden;
+            Stats.Visibility = Visibility.Hidden;
             AdminFindCurrentOrder(sender, e);
         }
         public void AdminPreviousOrder(object sender, RoutedEventArgs e)
@@ -130,17 +132,17 @@ namespace IT_Решения
             adminCurrentOrder.Visibility = Visibility.Hidden;
             Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Visible;
-            adminProfile.Visibility = Visibility.Hidden;
+            Stats.Visibility = Visibility.Hidden;
             AdminFindPreviousOrder(sender, e);
         }
-        public void AdminProfile(object sender, RoutedEventArgs e)
+        public void AdminStats(object sender, RoutedEventArgs e)
         {
             adminCurrentOrder.Visibility = Visibility.Hidden;
             Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
-            adminProfile.Visibility = Visibility.Visible;
+            Stats.Visibility = Visibility.Visible;
+            ShowStats();
         }
-
         public void WorkerCurrentOrder(object sender, RoutedEventArgs e)
         {
             workerCurrentOrder.Visibility = Visibility.Visible;
@@ -174,13 +176,25 @@ namespace IT_Решения
             public TextBox author;
             public TextBox status;
             public TextBox workers;
+            public Button submit;
+            public Button error;
             public string[] coloms;
         }
         private static tabel[] tabels;
         private List<TextBox> cells = new List<TextBox>();
-        public void ShowOrder(Canvas canvas, SqlDataReader reader, SqlDataReader readerWorkers, int i, int m, List<TextBox> cells)
+        private List<Button> buttons = new List<Button>();
+        private List<Button> error = new List<Button>();
+        public void ShowOrder(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells, bool isAdmin)//отображение заказов 
         {
-            int n = 0;
+            int n = 0, wight;
+            if (isAdmin)
+            {
+                wight = 175;
+            }
+            else
+            {
+                wight = 204;
+            }
             tabels[i].coloms = new string[m];
             for (int j = 0; j < tabels[i].coloms.Length; j++)
             {
@@ -192,116 +206,158 @@ namespace IT_Решения
             }
             tabels[i].id = new TextBox
             {
-                Width = 40,
-                Height = 80,
+                Width = 50,
+                Height = 40,
                 FontSize = 20
             };
             Canvas.SetLeft(tabels[i].id, 50);
-            Canvas.SetTop(tabels[i].id, 150 + (i + 1) * 80);
+            Canvas.SetTop(tabels[i].id, 190 + (i + 1) * 40);
             tabels[i].id.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].id);
-            //cells[i * 7 + n] = tabels[i].id;
             canvas.Children.Add(tabels[i].id);
             n++;
             tabels[i].date = new TextBox
             {
                 Width = 100,
-                Height = 80,
+                Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].date, 90);
-            Canvas.SetTop(tabels[i].date, 150 + (i + 1) * 80);
+            Canvas.SetLeft(tabels[i].date, 100);
+            Canvas.SetTop(tabels[i].date, 190 + (i + 1) * 40);
             tabels[i].date.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].date);
-            //cells[i * 7 + n] = tabels[i].date;
             canvas.Children.Add(tabels[i].date);
             n++;
             tabels[i].equipment = new TextBox
             {
-                Width = 192,
-                Height = 80,
+                Width = wight,
+                Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].equipment, 190);
-            Canvas.SetTop(tabels[i].equipment, 150 + (i + 1) * 80);
+            Canvas.SetLeft(tabels[i].equipment, 200 + wight * (n - 2));
+            Canvas.SetTop(tabels[i].equipment, 190 + (i + 1) * 40);
             tabels[i].equipment.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].equipment);
             canvas.Children.Add(tabels[i].equipment);
             n++;
             tabels[i].problem = new TextBox
             {
-                Width = 192,
-                Height = 80,
+                Width = wight,
+                Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].problem, 382);
-            Canvas.SetTop(tabels[i].problem, 150 + (i + 1) * 80);
+            Canvas.SetLeft(tabels[i].problem, 200 + wight * (n - 2));
+            Canvas.SetTop(tabels[i].problem, 190 + (i + 1) * 40);
             tabels[i].problem.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].problem);
             canvas.Children.Add(tabels[i].problem);
             n++;
             tabels[i].description = new TextBox
             {
-                Width = 192,
-                Height = 80,
+                Width = wight,
+                Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].description, 574);
-            Canvas.SetTop(tabels[i].description, 150 + (i + 1) * 80);
+            Canvas.SetLeft(tabels[i].description, 200 + wight * (n - 2));
+            Canvas.SetTop(tabels[i].description, 190 + (i + 1) * 40);
             tabels[i].description.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].description);
             canvas.Children.Add(tabels[i].description);
             n++;
             tabels[i].author = new TextBox
             {
-                Width = 192,
-                Height = 80,
+                Width = wight,
+                Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].author, 766);
-            Canvas.SetTop(tabels[i].author, 150 + (i + 1) * 80);
+            Canvas.SetLeft(tabels[i].author, 200 + wight * (n - 2));
+            Canvas.SetTop(tabels[i].author, 190 + (i + 1) * 40);
             tabels[i].author.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].author);
             canvas.Children.Add(tabels[i].author);
             n++;
             tabels[i].status = new TextBox
             {
-                Width = 150,
-                Height = 80,
+                Width = 100,
+                Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].status, 958);
-            Canvas.SetTop(tabels[i].status, 150 + (i + 1) * 80);
+            Canvas.SetLeft(tabels[i].status, 200 + wight * (n - 2));
+            Canvas.SetTop(tabels[i].status, 190 + (i + 1) * 40);
             tabels[i].status.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].status);
             canvas.Children.Add(tabels[i].status);
-
-            ShowWorkersInOrders(canvas, readerWorkers, i, m, cells);
-        }
-        public void ShowWorkersInOrders(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
-        {
-            tabels[i].coloms[m - 1] = " ";
-            if (reader.HasRows)
+            if (isAdmin)
             {
-                while (reader.Read())
+                tabels[i].error = new Button
                 {
-                    tabels[i].coloms[m-1] = tabels[i].coloms[m - 1].Insert(tabels[i].coloms[m - 1].Length, $"{Convert.ToString(reader.GetValue(0))}, ");
-                    tabels[i].coloms[m - 1] = tabels[i].coloms[m - 1].Trim();
-                }
+                    Width = 40,
+                    Height = 40,
+                    Name = $"error{i}",
+                    Content = "!",
+                    ToolTip = "Исполнитель не найден",
+                    FontSize = 27,
+                    Visibility = Visibility.Hidden,
+                    Cursor = Cursors.Help,
+                    Background = new SolidColorBrush(Color.FromRgb(234, 253, 193)),
+                    BorderBrush = new SolidColorBrush(Color.FromRgb(234, 253, 193))
+                };
+                Canvas.SetLeft(tabels[i].error, 1110);
+                Canvas.SetTop(tabels[i].error, 190 + (i + 1) * 40);
+                error.Add(tabels[i].error);
+                canvas.Children.Add(tabels[i].error);
+                tabels[i].submit = new Button
+                {
+                    Width = 163,
+                    Height = 30,
+                    FontSize = 20,
+                    Content = "Изменить автора",
+                    Name = $"submitButton{i}",
+                    Cursor = Cursors.Hand
+                };
+                tabels[i].submit.Click += SubmitChanges;
+                Canvas.SetLeft(tabels[i].submit, 1150);
+                Canvas.SetTop(tabels[i].submit, 195 + (i + 1) * 40);
+                buttons.Add(tabels[i].submit);
+                canvas.Children.Add(tabels[i].submit);
+            }
+        }
+        public void ShowWorkersInOrders(Canvas canvas, string workerText, int i, int m, List<TextBox> cells, bool isAdmin)//отображение исполнителей заказов
+        {
+            int width, setLeft;
+            if (isAdmin)
+            {
+                width = 110;
+                setLeft = 1000;
+            }
+            else
+            {
+                width = 184;
+                setLeft = 1116;
+            }
+            tabels[i].coloms[m - 1] = " ";
+            if (workerText != " ")
+            {
+                tabels[i].coloms[m - 1] = workerText;
+                tabels[i].coloms[m - 1] = tabels[i].coloms[m - 1].Trim();
+            }
+            else
+            {
+                tabels[i].coloms[m - 1] = "-";
             }
             tabels[i].workers = new TextBox
             {
-                Width = 142,
-                Height = 80,
+                Width = width,
+                Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].workers, 1108);
-            Canvas.SetTop(tabels[i].workers, 150 + (i + 1) * 80);
-            tabels[i].workers.Text = tabels[i].coloms[m-1];
+            Canvas.SetLeft(tabels[i].workers, setLeft);
+            Canvas.SetTop(tabels[i].workers, 190 + (i + 1) * 40);
+            tabels[i].workers.Text = tabels[i].coloms[m - 1];
             cells.Add(tabels[i].workers);
             canvas.Children.Add(tabels[i].workers);
         }
-        public void FindOrder(Canvas canvas, string slqExpressionWhere, string slqExpressionOrder, TextBlock NoOrder, List<TextBox> cells, TextBox textBox)
+        public void FindOrder(Canvas canvas, string slqExpressionWhere, string slqExpressionOrder, TextBlock NoOrder, List<TextBox> cells, TextBox textBox, bool isAdmin)// выполняет запросы к бд в соответствии с состоянием строки поиска
         {
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -312,8 +368,7 @@ namespace IT_Решения
             }
             else
             {
-                //sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
-                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND {slqExpressionWhere}";
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{textBox.Text}%\' OR problem LIKE \'%{textBox.Text}%\' OR description LIKE \'%{textBox.Text}%\' OR author LIKE \'%{textBox.Text}%\') AND {slqExpressionWhere}";
             }
             SqlCommand command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
@@ -324,11 +379,25 @@ namespace IT_Решения
                 {
                     canvas.Children.Remove(text);
                 }
-                //cells.Clear();
             }
-            if(count > 0)
+            if(buttons.Count != 0)
             {
-                //cells = new TextBox[count * 7];
+                foreach (Button button in buttons)//удаление старой
+                {
+                    canvas.Children.Remove(button);
+                }
+            }
+            buttons.Clear();
+            if (error.Count != 0)
+            {
+                foreach (Button error in error)//удаление старой
+                {
+                    canvas.Children.Remove(error);
+                }
+            }
+            error.Clear();
+            if (count > 0)// есть результат
+            {
                 NoOrder.Visibility = Visibility.Hidden;
                 tabels = new tabel[count];
 
@@ -338,49 +407,62 @@ namespace IT_Решения
                 }
                 else
                 {
-                    //sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE ({slqExpressionWhere}) AND (CONTAINS(equipment, \'{search1.Text}\') OR CONTAINS(problem, \'{search1.Text}\') OR CONTAINS(description, \'{search1.Text}\') OR CONTAINS(author, \'{search1.Text}\'))";
-                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{search1.Text}%\' OR problem LIKE \'%{search1.Text}%\' OR description LIKE \'%{search1.Text}%\' OR author LIKE \'%{search1.Text}%\') AND {slqExpressionWhere} {slqExpressionOrder}";
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{textBox.Text}%\' OR problem LIKE \'%{textBox.Text}%\' OR description LIKE \'%{textBox.Text}%\' OR author LIKE \'%{textBox.Text}%\') AND {slqExpressionWhere} {slqExpressionOrder}";
                 }
 
                 command = new SqlCommand(sqlExpression, connection);
                 SqlDataReader reader = command.ExecuteReader();
                 SqlDataReader tempReader;
+                SqlCommand tempCommand;
                 int i = 0;
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        sqlExpression = $"SELECT name, surname FROM [dbo].[workers] WHERE orderId = {Convert.ToString(reader.GetValue(0))}";
-                        command = new SqlCommand(sqlExpression, connection);
-                        tempReader = command.ExecuteReader();
-                        ShowOrder(canvas, reader, tempReader, i, 7, cells);
+                        ShowOrder(canvas, reader, i, 7, cells, isAdmin);
                         i++;
+                    }
+                    reader.Close();
+                    
+                    for(int j = 0; i > 0; j++, i--)// исполниетели каждого показываемого заказа
+                    {
+                        sqlExpression = $"SELECT name, surname FROM [dbo].[workers] WHERE orderId = {tabels[j].id.Text}";
+                        tempCommand = new SqlCommand(sqlExpression, connection);
+                        tempCommand.ExecuteNonQuery();
+                        string workerText = " ";
+                        if (Convert.ToString(tempCommand.ExecuteScalar()) != "")
+                        {
+                            tempReader = tempCommand.ExecuteReader();
+                            tempReader.Read();
+                            for(int k = 0; k < 2; k++)
+                            {
+                                workerText = workerText.Insert(workerText.Length, $" {Convert.ToString(tempReader.GetValue(k))}");
+                                workerText = workerText.Trim();
+                            }
+                            tempReader.Close();
+                        }
+                        ShowWorkersInOrders(canvas, workerText, j, 7, cells, isAdmin);
                     }
                 }
             }
-            else
+            else// нет результата
             {
                 NoOrder.Visibility = Visibility.Visible;
             }
-            //Convert.ToString(command.ExecuteScalar());
-            //SqlDataAdapter dataAdp = new SqlDataAdapter(command);
-            //DataTable dt = new DataTable("Orders");
-            //dataAdp.Fill(dt);
-            //currentOrderData.ItemsSource = dt.DefaultView;
             connection.Close();
         }
         public void UserFindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(userCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\')", "", userNoCurrentOrders, cells, search1);
+            FindOrder(userCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\')", "", userNoCurrentOrders, cells, search1, false);
         }
         public void UserFindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(userPreviousOrder, "(status = \'выполнено\')", "", userNoPreviousOrders, cells, search2);
+            FindOrder(userPreviousOrder, "(status = \'выполнено\')", "", userNoPreviousOrders, cells, search2, false);
         }
         public void AddNewOrder(object sender, RoutedEventArgs e)
         {
             OrderAdded.Visibility = Visibility.Hidden;
-            if (equipmentName.Text == "")
+            if (equipmentName.Text == "")// проверка заполненности полей
             {
                 warning1.Visibility = Visibility.Visible;
             }
@@ -404,7 +486,7 @@ namespace IT_Решения
             {
                 warning3.Visibility = Visibility.Hidden;
             }
-            if(equipmentName.Text != "" && problemName.Text != "" && descriptionName.Text != "")
+            if(equipmentName.Text != "" && problemName.Text != "" && descriptionName.Text != "")// добавление в бд нового заказа
             {
                 SqlConnection connection = new SqlConnection(connectionString);
                 connection.Open();
@@ -427,7 +509,7 @@ namespace IT_Решения
             public string[] coloms;
         }
         private static WorkerTabel[] WorkerTabels;
-        public void ShowWorker(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
+        public void ShowWorker(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)// показ работников
         {
             int n = 0;
             WorkerTabels[i].coloms = new string[m];
@@ -511,8 +593,8 @@ namespace IT_Решения
             cells.Add(WorkerTabels[i].projectId);
             canvas.Children.Add(WorkerTabels[i].projectId);
         }
-        public void FindWorkers(Canvas thisCanvas, Canvas canvas, List<TextBox> cells, TextBox textBox)
-        {
+        public void FindWorkers(Canvas thisCanvas, Canvas canvas, List<TextBox> cells, TextBox textBox)// запрос к бд на информацию о работниках
+        { 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlExpression = "";
@@ -564,6 +646,51 @@ namespace IT_Решения
             }
             connection.Close();
         }
+        public void SubmitChanges(object sender, RoutedEventArgs e)
+        {
+            if (error.Count != 0)
+            {
+                foreach (Button error in error)//удаление старой
+                {
+                    error.Visibility = Visibility.Hidden;
+                }
+            }
+            Button thisButton = sender as Button;
+            string buttonName = thisButton.Name.Remove(0, 12);
+            int i = Int32.Parse(buttonName);
+            int id = Int32.Parse(tabels[i].id.Text);
+            string[] nameSurname = tabels[i].workers.Text.Split(' ');
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlExpression;
+            SqlCommand command;
+            error[i].Visibility = Visibility.Hidden;
+            if (nameSurname.Length > 1)
+            {
+                sqlExpression = $"SELECT id FROM [dbo].[workers] WHERE name = \'{nameSurname[0]}\' AND surname = \'{nameSurname[1]}\'";
+                command = new SqlCommand(sqlExpression, connection);
+                command.ExecuteNonQuery();
+                if (int.TryParse(Convert.ToString(command.ExecuteScalar()), out int x))
+                {
+                    sqlExpression = $"UPDATE [dbo].[workers] SET orderId = {id}, status = \'в работе\' WHERE id = {x}";
+                    command = new SqlCommand(sqlExpression, connection);
+                    command.ExecuteNonQuery();
+                    sqlExpression = $"UPDATE [dbo].[orders] SET status = \'в работе\' WHERE orderId = {id}";
+                    command = new SqlCommand(sqlExpression, connection);
+                    command.ExecuteNonQuery();
+                }
+                else
+                {
+                    error[i].Visibility = Visibility.Visible;
+                }
+            }
+            else
+            {
+                error[i].Visibility = Visibility.Visible;
+            }
+            connection.Close();
+        }
         public void ShowWorkers(object sender, RoutedEventArgs e)
         {
             if(adminCurrentOrder.Visibility == Visibility.Visible)
@@ -575,22 +702,37 @@ namespace IT_Решения
                 FindWorkers(Workers, adminPreviousOrder, cells, search7);
             }
         }
+        public void ShowStats()
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE status = \'выполнено\'";
+            SqlCommand command = new SqlCommand(sqlExpression, connection);
+            command.ExecuteNonQuery();
+            int count = (int)command.ExecuteScalar();
+            CompletedOrdersAmmount.Text = count.ToString();
+            sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders]";
+            command = new SqlCommand(sqlExpression, connection);
+            command.ExecuteNonQuery();
+            count = (int)command.ExecuteScalar();
+            allOrdersAmmount.Text = count.ToString();
+        }
         public void AdminFindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(adminCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\')", "ORDER BY status ASC", adminNoCurrentOrders, cells, search3);
+            FindOrder(adminCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\')", "ORDER BY status ASC", adminNoCurrentOrders, cells, search3, true);
         }
         public void AdminFindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(adminPreviousOrder, "(status = \'выполнено\')", "", adminNoPreviousOrders, cells, search4);
+            FindOrder(adminPreviousOrder, "(status = \'выполнено\')", "", adminNoPreviousOrders, cells, search4, false);
         }
 
         public void WorkerFindCurrentOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(workerCurrentOrder, "status = \'в работе\' OR status = \'в ожидании\'", "", workerNoCurrentOrders, cells, search5);
+            FindOrder(workerCurrentOrder, "status = \'в работе\' OR status = \'в ожидании\'", "", workerNoCurrentOrders, cells, search5, false);
         }
         public void WorkerFindPreviousOrder(object sender, RoutedEventArgs e)
         {
-            FindOrder(workerPreviousOrder, "status = \'выполнено\'", "", workerNoPreviousOrders, cells, search6);
+            FindOrder(workerPreviousOrder, "status = \'выполнено\'", "", workerNoPreviousOrders, cells, search6, false);
         }
     }
 }
