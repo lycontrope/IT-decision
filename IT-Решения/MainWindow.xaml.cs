@@ -17,16 +17,19 @@ using System.Data;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Media.Animation;
 using System.Windows.Markup;
+using System.Windows.Media.Media3D;
+using System.IO;
 
 namespace IT_Решения
 {
     public partial class MainWindow : Window
     {
-        string connectionString = @"Server=26.97.227.1, 1433; Database=SP02; Uid=sa; Pwd=123qwe;";// 192.168.0.166  26.97.227.1  Trusted_Connection=True; TrustServerCertificate=True;  20
+        string connectionString = @"Server=26.97.227.1, 1433; Database=SP02; Uid=sa; Pwd=123qwe;";// 192.168.0.166  26.97.227.1  Trusted_Connection=True; TrustServerCertificate=True;  25
         public MainWindow()
         {
             InitializeComponent();
         }
+        int thisId;
         public void Login(object sender, RoutedEventArgs e)//вход проверка логин пароль
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -50,15 +53,14 @@ namespace IT_Решения
                     userTop.Visibility = Visibility.Visible;
                     newOrder.Visibility = Visibility.Hidden;
                     userPreviousOrder.Visibility = Visibility.Hidden;
-                    userProfile.Visibility = Visibility.Hidden;
+                    Comments.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
                     UserFindCurrentOrder(sender, e);
                 }
                 else if (answer == "admin")
                 {
                     adminCurrentOrder.Visibility = Visibility.Visible;
-                    adminTop.Visibility = Visibility.Visible;
-                    
+                    adminTop.Visibility = Visibility.Visible;                   
                     adminPreviousOrder.Visibility = Visibility.Hidden;
                     Stats.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
@@ -68,12 +70,17 @@ namespace IT_Решения
                 {
                     workerCurrentOrder.Visibility = Visibility.Visible;
                     workerTop.Visibility = Visibility.Visible;
-
                     workerPreviousOrder.Visibility = Visibility.Hidden;
-                    workerProfile.Visibility = Visibility.Hidden;
+                    Comments.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
                     WorkerFindCurrentOrder(sender, e);
                 }
+                sqlExpression = $"SELECT id FROM [dbo].[entry] WHERE login = \'{Username}\'";
+                command = new SqlCommand(sqlExpression, connection);
+                command.ExecuteNonQuery();
+                answer = Convert.ToString(command.ExecuteScalar());
+                answer = answer.Trim();
+                thisId = Int32.Parse(answer);
             }
             else
             {
@@ -81,19 +88,45 @@ namespace IT_Решения
             }
             connection.Close();
         }
+        public void Exit(object sender, EventArgs e)
+        {
+            exit.Visibility = Visibility.Visible;
+        }
+        public void ConfirmExit(object sender, EventArgs e)
+        {
+            login.Visibility = Visibility.Visible;
+            exit.Visibility = Visibility.Hidden;
+            userCurrentOrder.Visibility = Visibility.Hidden;
+            userTop.Visibility = Visibility.Hidden;
+            newOrder.Visibility = Visibility.Hidden;
+            userPreviousOrder.Visibility = Visibility.Hidden;
+            adminCurrentOrder.Visibility = Visibility.Hidden;
+            adminTop.Visibility = Visibility.Hidden;
+            adminPreviousOrder.Visibility = Visibility.Hidden;
+            Stats.Visibility = Visibility.Hidden;
+            workerCurrentOrder.Visibility = Visibility.Hidden;
+            workerTop.Visibility = Visibility.Hidden;
+            workerPreviousOrder.Visibility = Visibility.Hidden;
+            Comments.Visibility = Visibility.Hidden;
+            thisId = 0;
+        }
+        public void CancelExit(object sender, EventArgs e)
+        {
+            exit.Visibility = Visibility.Hidden;
+        }
         public void NewOrder(object sender, RoutedEventArgs e)
         {
             userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Visible;
             userPreviousOrder.Visibility = Visibility.Hidden;
-            userProfile.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
         }
         public void UserCurrentOrder(object sender, RoutedEventArgs e)
         {
             userCurrentOrder.Visibility = Visibility.Visible;
             newOrder.Visibility = Visibility.Hidden;
             userPreviousOrder.Visibility = Visibility.Hidden;
-            userProfile.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
             UserFindCurrentOrder(sender, e);
         }
         public void UserPreviousOrder(object sender, RoutedEventArgs e)
@@ -101,15 +134,8 @@ namespace IT_Решения
             userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Hidden;
             userPreviousOrder.Visibility = Visibility.Visible;
-            userProfile.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
             UserFindPreviousOrder(sender, e);
-        }
-        public void UserProfile(object sender, RoutedEventArgs e)
-        {
-            userCurrentOrder.Visibility = Visibility.Hidden;
-            newOrder.Visibility = Visibility.Hidden;
-            userPreviousOrder.Visibility = Visibility.Hidden;
-            userProfile.Visibility = Visibility.Visible;
         }
         public void AdminWorkers(object sender, RoutedEventArgs e)
         {
@@ -118,6 +144,7 @@ namespace IT_Решения
             Workers.Visibility = Visibility.Visible;
             adminPreviousOrder.Visibility = Visibility.Hidden;
             Stats.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
         }
         public void AdminCurrentOrder(object sender, RoutedEventArgs e)
         {
@@ -125,6 +152,7 @@ namespace IT_Решения
             Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
             Stats.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
             AdminFindCurrentOrder(sender, e);
         }
         public void AdminPreviousOrder(object sender, RoutedEventArgs e)
@@ -133,6 +161,7 @@ namespace IT_Решения
             Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Visible;
             Stats.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
             AdminFindPreviousOrder(sender, e);
         }
         public void AdminStats(object sender, RoutedEventArgs e)
@@ -141,40 +170,42 @@ namespace IT_Решения
             Workers.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
             Stats.Visibility = Visibility.Visible;
+            exit.Visibility = Visibility.Hidden;
             ShowStats();
         }
         public void WorkerCurrentOrder(object sender, RoutedEventArgs e)
         {
             workerCurrentOrder.Visibility = Visibility.Visible;
-            //newOrder.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Hidden;
-            workerProfile.Visibility = Visibility.Hidden;
+            Comments.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
             WorkerFindCurrentOrder(sender, e);
         }
         public void WorkerPreviousOrder(object sender, RoutedEventArgs e)
         {
             workerCurrentOrder.Visibility = Visibility.Hidden;
-            //newOrder.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Visible;
-            workerProfile.Visibility = Visibility.Hidden;
+            Comments.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
             WorkerFindPreviousOrder(sender, e);
         }
-        public void WorkerProfile(object sender, RoutedEventArgs e)
+        public void NewComment(object sender, RoutedEventArgs e)
         {
             workerCurrentOrder.Visibility = Visibility.Hidden;
-            //newOrder.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Hidden;
-            workerProfile.Visibility = Visibility.Visible;
+            Comments.Visibility = Visibility.Visible;
+            exit.Visibility = Visibility.Hidden;
         }
         public struct tabel
         {
-            public TextBox id;
+            public TextBox orderId;
             public TextBox date;
             public TextBox equipment;
             public TextBox problem;
             public TextBox description;
             public TextBox author;
             public TextBox status;
+            public TextBox id;
             public TextBox workers;
             public Button submit;
             public Button error;
@@ -204,17 +235,17 @@ namespace IT_Решения
             {
                 tabels[i].coloms[j] = tabels[i].coloms[j].Trim();
             }
-            tabels[i].id = new TextBox
+            tabels[i].orderId = new TextBox
             {
                 Width = 50,
                 Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].id, 50);
-            Canvas.SetTop(tabels[i].id, 190 + (i + 1) * 40);
-            tabels[i].id.Text = tabels[i].coloms[n];
-            cells.Add(tabels[i].id);
-            canvas.Children.Add(tabels[i].id);
+            Canvas.SetLeft(tabels[i].orderId, 50);
+            Canvas.SetTop(tabels[i].orderId, 190 + (i + 1) * 40);
+            tabels[i].orderId.Text = tabels[i].coloms[n];
+            cells.Add(tabels[i].orderId);
+            canvas.Children.Add(tabels[i].orderId);
             n++;
             tabels[i].date = new TextBox
             {
@@ -264,29 +295,20 @@ namespace IT_Решения
             cells.Add(tabels[i].description);
             canvas.Children.Add(tabels[i].description);
             n++;
-            tabels[i].author = new TextBox
-            {
-                Width = wight,
-                Height = 40,
-                FontSize = 20
-            };
-            Canvas.SetLeft(tabels[i].author, 200 + wight * (n - 2));
-            Canvas.SetTop(tabels[i].author, 190 + (i + 1) * 40);
-            tabels[i].author.Text = tabels[i].coloms[n];
-            cells.Add(tabels[i].author);
-            canvas.Children.Add(tabels[i].author);
-            n++;
             tabels[i].status = new TextBox
             {
                 Width = 100,
                 Height = 40,
                 FontSize = 20
             };
-            Canvas.SetLeft(tabels[i].status, 200 + wight * (n - 2));
+            Canvas.SetLeft(tabels[i].status, 200 + wight * (n - 1));
             Canvas.SetTop(tabels[i].status, 190 + (i + 1) * 40);
             tabels[i].status.Text = tabels[i].coloms[n];
             cells.Add(tabels[i].status);
             canvas.Children.Add(tabels[i].status);
+            n++;
+            tabels[i].id = new TextBox();
+            tabels[i].id.Text = tabels[i].coloms[n];
             if (isAdmin)
             {
                 tabels[i].error = new Button
@@ -321,6 +343,40 @@ namespace IT_Решения
                 buttons.Add(tabels[i].submit);
                 canvas.Children.Add(tabels[i].submit);
             }
+        }
+        public void ShowAuthorsInOrders(Canvas canvas, string authorText, int i, List<TextBox> cells, bool isAdmin)
+        {
+            int wight;
+            if (isAdmin)
+            {
+                wight = 175;
+            }
+            else
+            {
+                wight = 204;
+            }
+            tabels[i].coloms[5] = " ";
+            if (authorText != " ")
+            {
+                tabels[i].coloms[5] = authorText;
+                tabels[i].coloms[5] = tabels[i].coloms[5].Trim();
+            }
+            else
+            {
+                tabels[i].coloms[5] = "-";
+            }
+            tabels[i].author = new TextBox
+            {
+                Width = wight,
+                Height = 40,
+                FontSize = 20
+            };
+            Canvas.SetLeft(tabels[i].author, 200 + wight * 3);
+            Canvas.SetTop(tabels[i].author, 190 + (i + 1) * 40);
+            tabels[i].author.Text = tabels[i].coloms[5];
+            cells.Add(tabels[i].author);
+            canvas.Children.Add(tabels[i].author);
+            
         }
         public void ShowWorkersInOrders(Canvas canvas, string workerText, int i, int m, List<TextBox> cells, bool isAdmin)//отображение исполнителей заказов
         {
@@ -368,7 +424,7 @@ namespace IT_Решения
             }
             else
             {
-                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{textBox.Text}%\' OR problem LIKE \'%{textBox.Text}%\' OR description LIKE \'%{textBox.Text}%\' OR author LIKE \'%{textBox.Text}%\') AND {slqExpressionWhere}";
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{textBox.Text}%\' OR problem LIKE \'%{textBox.Text}%\' OR description LIKE \'%{textBox.Text}%\') AND {slqExpressionWhere}";
             }
             SqlCommand command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
@@ -407,7 +463,7 @@ namespace IT_Решения
                 }
                 else
                 {
-                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{textBox.Text}%\' OR problem LIKE \'%{textBox.Text}%\' OR description LIKE \'%{textBox.Text}%\' OR author LIKE \'%{textBox.Text}%\') AND {slqExpressionWhere} {slqExpressionOrder}";
+                    sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE (equipment LIKE \'%{textBox.Text}%\' OR problem LIKE \'%{textBox.Text}%\' OR description LIKE \'%{textBox.Text}%\') AND {slqExpressionWhere} {slqExpressionOrder}";
                 }
 
                 command = new SqlCommand(sqlExpression, connection);
@@ -424,9 +480,29 @@ namespace IT_Решения
                     }
                     reader.Close();
                     
+		            int i1 = i;
+		            for(int j = 0; i1 > 0; j++, i1--)
+                    {
+                        sqlExpression = $"SELECT name, surname FROM [dbo].[entry] WHERE id = (SELECT id FROM [dbo].[orders] WHERE orderId = {tabels[j].orderId.Text})";
+                        tempCommand = new SqlCommand(sqlExpression, connection);
+                        tempCommand.ExecuteNonQuery();
+                        string authorText = " ";
+                        if (Convert.ToString(tempCommand.ExecuteScalar()) != "")
+                        {
+                            tempReader = tempCommand.ExecuteReader();
+                            tempReader.Read();
+                            for(int k = 0; k < 2; k++)
+                            {
+                                authorText = authorText.Insert(authorText.Length, $" {Convert.ToString(tempReader.GetValue(k))}");
+                                authorText = authorText.Trim();
+                            }
+                            tempReader.Close();
+			            }
+                        ShowAuthorsInOrders(canvas, authorText, j, cells, isAdmin);
+			        }
                     for(int j = 0; i > 0; j++, i--)// исполниетели каждого показываемого заказа
                     {
-                        sqlExpression = $"SELECT name, surname FROM [dbo].[workers] WHERE orderId = {tabels[j].id.Text}";
+                        sqlExpression = $"SELECT name, surname FROM [dbo].[entry] WHERE id = (SELECT id FROM [dbo].[workers] WHERE orderId = {tabels[j].orderId.Text})";
                         tempCommand = new SqlCommand(sqlExpression, connection);
                         tempCommand.ExecuteNonQuery();
                         string workerText = " ";
@@ -491,7 +567,7 @@ namespace IT_Решения
                 SqlConnection connection = new SqlConnection(connectionString);
                 connection.Open();
                 DateTime dateTime = DateTime.Now;
-                string sqlExpression = $"INSERT INTO [dbo].[orders] VALUES (\'{dateTime.Year}-{dateTime.Month}-{dateTime.Day}\', \'{equipmentName.Text}\',\'{problemName.Text}\',\'{descriptionName.Text}\',\'{username.Text}\', \'в ожидании\')";
+                string sqlExpression = $"INSERT INTO [dbo].[orders] VALUES (\'{dateTime.Year}-{dateTime.Month}-{dateTime.Day}\', \'{equipmentName.Text}\',\'{problemName.Text}\',\'{descriptionName.Text}\', \'в ожидании\', {thisId})";
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -512,12 +588,12 @@ namespace IT_Решения
         public void ShowWorker(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)// показ работников
         {
             int n = 0;
-            WorkerTabels[i].coloms = new string[m];
-            for (int j = 0; j < WorkerTabels[i].coloms.Length; j++)
+            WorkerTabels[i].coloms = new string[m+2];
+            for (int j = 0; j < 4; j++)
             {
                 WorkerTabels[i].coloms[j] = Convert.ToString(reader.GetValue(j));
             }
-            for (int j = 0; j < WorkerTabels[i].coloms.Length; j++)
+            for (int j = 0; j < 4; j++)
             {
                 WorkerTabels[i].coloms[j] = WorkerTabels[i].coloms[j].Trim();
             }
@@ -540,11 +616,9 @@ namespace IT_Решения
                 FontSize = 20
             };
             Canvas.SetLeft(WorkerTabels[i].name, 200);
-            Canvas.SetTop(WorkerTabels[i].name, 150 + (i + 1) * 80);
-            WorkerTabels[i].name.Text = WorkerTabels[i].coloms[n];
+            Canvas.SetTop(WorkerTabels[i].name, 150 + (i + 1) * 80); 
             cells.Add(WorkerTabels[i].name);
             canvas.Children.Add(WorkerTabels[i].name);
-            n++;
             WorkerTabels[i].surname = new TextBox
             {
                 Width = 250,
@@ -553,10 +627,8 @@ namespace IT_Решения
             };
             Canvas.SetLeft(WorkerTabels[i].surname, 450);
             Canvas.SetTop(WorkerTabels[i].surname, 150 + (i + 1) * 80);
-            WorkerTabels[i].surname.Text = WorkerTabels[i].coloms[n];
             cells.Add(WorkerTabels[i].surname);
             canvas.Children.Add(WorkerTabels[i].surname);
-            n++;
             WorkerTabels[i].status = new TextBox
             {
                 Width = 150,
@@ -592,6 +664,20 @@ namespace IT_Решения
             WorkerTabels[i].projectId.Text = WorkerTabels[i].coloms[n];
             cells.Add(WorkerTabels[i].projectId);
             canvas.Children.Add(WorkerTabels[i].projectId);
+        }
+        public void ShowNameInWorkers(SqlDataReader reader, int i)//отображение исполнителей заказов
+        {
+            //WorkerTabels[i].coloms = new string[2];
+            for (int j = 4; j < 6; j++)
+            {
+                WorkerTabels[i].coloms[j] = Convert.ToString(reader.GetValue(j-4));
+            }
+            for (int j = 4; j < 6; j++)
+            {
+                WorkerTabels[i].coloms[j] = WorkerTabels[i].coloms[j].Trim();
+            }
+            WorkerTabels[i].name.Text = WorkerTabels[i].coloms[1];
+            WorkerTabels[i].surname.Text = WorkerTabels[i].coloms[2];
         }
         public void FindWorkers(Canvas thisCanvas, Canvas canvas, List<TextBox> cells, TextBox textBox)// запрос к бд на информацию о работниках
         { 
@@ -635,8 +721,21 @@ namespace IT_Решения
                 {
                     while (reader.Read())
                     {
-                        ShowWorker(thisCanvas, reader, i, 6, cells);
+                        ShowWorker(thisCanvas, reader, i, 4, cells);
                         i++;
+                    }
+                    reader.Close();
+
+                    for (int j = 0; i > 0; j++, i--)
+                    {
+                        sqlExpression = $"SELECT name, surname FROM [dbo].[entry] WHERE id = {WorkerTabels[j].id.Text}";
+                        SqlCommand tempCommand = new SqlCommand(sqlExpression, connection);
+                        tempCommand.ExecuteNonQuery();
+                        SqlDataReader tempReader = tempCommand.ExecuteReader();
+                        tempReader.Read();
+                        ShowNameInWorkers(tempReader, j);
+                        tempReader.Close();
+
                     }
                 }
             }
@@ -733,6 +832,10 @@ namespace IT_Решения
         public void WorkerFindPreviousOrder(object sender, RoutedEventArgs e)
         {
             FindOrder(workerPreviousOrder, "status = \'выполнено\'", "", workerNoPreviousOrders, cells, search6, false);
+        }
+        public void AddComment(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
