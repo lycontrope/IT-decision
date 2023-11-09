@@ -728,7 +728,7 @@ namespace IT_Решения
 
                     for (int j = 0; i > 0; j++, i--)
                     {
-                        sqlExpression = $"SELECT name, surname FROM [dbo].[entry] WHERE id = {WorkerTabels[j].id.Text}";
+                        sqlExpression = $"SELECT name, surname FROM [dbo].[entry] WHERE id = {WorkerTabels[j].id.Text}";// подзапрос
                         SqlCommand tempCommand = new SqlCommand(sqlExpression, connection);
                         tempCommand.ExecuteNonQuery();
                         SqlDataReader tempReader = tempCommand.ExecuteReader();

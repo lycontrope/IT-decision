@@ -120,7 +120,7 @@
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="WorkerFindPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="workerNoPreviousOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
-        <Canvas Name="Comments" Focusable="True" Opacity="1" Visibility="Visible">
+        <Canvas Name="Comments" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Заполниете все поля" Canvas.Left="50" Canvas.Top="145" Height="40" Width="290" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBlock Text="id заявки" Canvas.Left="50" Canvas.Top="215" Height="40" Width="135" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="orderId" Height="50" Canvas.Left="210" TextWrapping="Wrap" Text="" Canvas.Top="215" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
