@@ -20,16 +20,13 @@
             <Button ToolTip="" Content="Войти" Canvas.Left="500" Canvas.Top="540" Height="50" Width="350" Click="Login" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" />
             <TextBlock x:Name="IncorrectLoginOrPassword" Text="Неправильный логин или пароль" Canvas.Left="520" Canvas.Top="620" HorizontalAlignment="Center" VerticalAlignment="Center"  FontSize="20" Visibility="Hidden"/>
         </Canvas>
-        <Canvas Name="exit" Focusable="True" Opacity="1" Visibility="Hidden">
-            <Button ToolTip="" Content="Да" Canvas.Left="250" Canvas.Top="500" Height="50" Width="350" Click="ConfirmExit" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" />
-            <Button ToolTip="" Content="Нет" Canvas.Left="750" Canvas.Top="500" Height="50" Width="350" Click="CancelExit" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" />
-            <TextBlock Text="Вы уверены, что хотите выйти" Canvas.Left="465" Canvas.Top="400" HorizontalAlignment="Left" VerticalAlignment="Center"  FontSize="30" Visibility="Visible" Width="420"/>
-        </Canvas>
+
         <Canvas Name="userTop" Focusable="True" Opacity="1" Visibility="Hidden">
-            <Button ToolTip="" Content="Новая заявка" Canvas.Left="50" Canvas.Top="30" Height="50" Width="275" Click="NewOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <Button ToolTip="" Content="Текущие заявки" Canvas.Left="375" Canvas.Top="30" Height="50" Width="275" Click="UserCurrentOrder" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30"/>
-            <Button ToolTip="" Content="Прошлые заявки" Canvas.Left="700" Canvas.Top="30" Height="50" Width="275" Click="UserPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <Button ToolTip="" Content="Выход" Canvas.Left="1025" Canvas.Top="30" Height="50" Width="275" Click="Exit" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Button ToolTip="" Content="Новая заявка" Canvas.Left="40" Canvas.Top="30" Height="50" Width="190" Click="NewOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Button ToolTip="" Content="Текущие заявки" Canvas.Left="290" Canvas.Top="30" Height="50" Width="220" Click="UserCurrentOrder" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30"/>
+            <Button ToolTip="" Content="Прошлые заявки" Canvas.Left="560" Canvas.Top="30" Height="50" Width="240" Click="UserPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Button ToolTip="" Content="Комментарии" Canvas.Left="850" Canvas.Top="30" Height="50" Width="220" Click="UserComments" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Button ToolTip="" Content="Выход" Canvas.Left="1120" Canvas.Top="30" Height="50" Width="190" Click="Exit" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
         </Canvas>
         <Canvas Name="userCurrentOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Текущие заявки" Canvas.Left="50" Canvas.Top="150" Height="40" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -59,6 +56,14 @@
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="UserFindPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="userNoPreviousOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
+        <Canvas Name="Comments" Focusable="True" Opacity="1" Visibility="Hidden">
+            <TextBlock Text="Комментарии" Canvas.Left="50" Canvas.Top="150" Height="40" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="search8" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="UserFindComments" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBlock x:Name="userNoComments" Text="К заданному запросу комментарии отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="665" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" />
+        </Canvas>
+
 
 
         <Canvas Name="adminTop" Focusable="True" Opacity="1" Visibility="Hidden">
@@ -69,10 +74,11 @@
             <Button ToolTip="" Content="Выход" Canvas.Left="1120" Canvas.Top="30" Height="50" Width="190" Click="Exit" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
         </Canvas>
         <Canvas Name="Workers" Focusable="True" Opacity="1" Visibility="Hidden">
-            <TextBlock Text="Работники" Canvas.Left="50" Canvas.Top="146" Height="79" Width="289" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="search7" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="332" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите имя, фамилию или статус работника"/></TextBlock>
-            <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="ShowWorkers" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBlock Text="Работники" Canvas.Left="30" Canvas.Top="146" Height="35" Width="149" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="search7" Height="50" Canvas.Left="205" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBlock Canvas.Left="250" Canvas.Top="118" Height="23" Width="332" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите имя, фамилию или статус работника"/></TextBlock>
+            <Button ToolTip="" Content="Найти" Canvas.Left="980" Canvas.Top="146" Height="50" Width="150" Click="ShowWorkers" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Button ToolTip="" Content="Добавить" Canvas.Left="1170" Canvas.Top="146" Height="50" Width="150" Click="AdminNewWorker" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="NoWorkers" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
         <Canvas Name="adminCurrentOrder" Focusable="True" Opacity="1" Visibility="Hidden">
@@ -98,6 +104,20 @@
             <TextBlock Text="Среднее время выполнения заявки" Canvas.Left="50" Canvas.Top="355" Height="45" Width="495" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="averageOrderTime" Height="45" Canvas.Left="555" TextWrapping="Wrap" Text="" Canvas.Top="355" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" Background="#FFEAFDC1" BorderBrush="#FFEAFDC1" />
         </Canvas>
+        <Canvas Name="newWorker" Focusable="True" Opacity="1" Visibility="Hidden">
+            <TextBlock Text="Заполниете все поля" Canvas.Left="50" Canvas.Top="145" Height="40" Width="320" TextAlignment="Center" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <TextBlock Text="Имя фамилия" Canvas.Left="59" Canvas.Top="215" Height="41" Width="190" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="workerName" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="265" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Rectangle x:Name="warning7" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="47" Visibility="Hidden"/>
+            <TextBlock Text="Должность" Canvas.Left="59" Canvas.Top="355" Height="45" Width="153" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="workerState" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="405" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Rectangle x:Name="warning8" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="402" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
+            <TextBlock Text="Профессия (при необходимости)" Canvas.Left="59" Canvas.Top="495" Height="45" Width="457" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="workerRang" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="545" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <Rectangle x:Name="warning9" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="402" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
+            <Button ToolTip="" Content="Добавить исполнителя" Canvas.Left="50" Canvas.Top="655" Height="50" Width="320" Click="AddNewOrder" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30"/>
+            <TextBlock x:Name="workerAdded" Text="Заявка добавлена" Canvas.Left="420" Canvas.Top="754" Height="42" Width="248" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden"/>
+        </Canvas>
 
 
         <Canvas Name="workerTop" Focusable="True" Opacity="1" Visibility="Hidden">
@@ -120,19 +140,27 @@
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="WorkerFindPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="workerNoPreviousOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
-        <Canvas Name="Comments" Focusable="True" Opacity="1" Visibility="Hidden">
+        <Canvas Name="addComments" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Заполниете все поля" Canvas.Left="50" Canvas.Top="145" Height="40" Width="290" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBlock Text="id заявки" Canvas.Left="50" Canvas.Top="215" Height="40" Width="135" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="orderId" Height="50" Canvas.Left="210" TextWrapping="Wrap" Text="" Canvas.Top="215" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <Rectangle x:Name="warning4" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="47" Visibility="Hidden"/>
+            <Rectangle x:Name="warning4" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="106" Canvas.Top="212" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="207" Visibility="Hidden"/>
             <TextBlock Text="Комментарий к проблеме" Canvas.Left="50" Canvas.Top="285" Height="40" Width="365" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="problemComment" Height="150" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="355" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <Rectangle x:Name="warning5" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="402" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
+            <Rectangle x:Name="warning5" Tag="wall" Stroke="Red" StrokeThickness="3" Height="156" Width="1066" Canvas.Top="352" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
             <TextBlock Text="Комментарий к описанию" Canvas.Left="50" Canvas.Top="535" Height="40" Width="360" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="descriptionComment" Height="180" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="605" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30"/>
-            <Rectangle x:Name="warning6" Tag="wall" Stroke="Red" StrokeThickness="3" Height="186" Width="1066" Canvas.Top="542" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
-            <Button ToolTip="" Content="Добавить комментарий" Canvas.Left="50" Canvas.Top="815" Height="50" Width="360" Click="AddComment" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock x:Name="CommentAdded" Text="Коментарий добавлен" Canvas.Left="420" Canvas.Top="754" Height="42" Width="248" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden"/>
+            <TextBox x:Name="descriptionComment" Height="150" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="605" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30"/>
+            <Rectangle x:Name="warning6" Tag="wall" Stroke="Red" StrokeThickness="3" Height="156" Width="1066" Canvas.Top="602" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="47" Visibility="Hidden"/>
+            <Button ToolTip="" Content="Добавить комментарий" Canvas.Left="50" Canvas.Top="785" Height="50" Width="360" Click="AddComment" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
+            <TextBlock x:Name="CommentAdded" Text="Комментарий добавлен" Canvas.Left="470" Canvas.Top="790" Height="42" Width="330" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden"/>
+            <TextBlock x:Name="CommentIncorect" Text="Некорректные данные" Canvas.Left="470" Canvas.Top="790" Height="42" Width="314" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden"/>
+        </Canvas>
+        <Canvas Name="exit" Focusable="True" Opacity="1" Visibility="Hidden">
+            <Rectangle x:Name="wall5" Tag="wall" Stroke="#FFC5F067" StrokeThickness="100" Height="110" Width="1350" RenderTransformOrigin="0.5,0.5" Opacity="0.6" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Rectangle x:Name="wall6" Tag="wall" Stroke="#FFEAFDC1" StrokeThickness="770" Height="769" Width="1350" RenderTransformOrigin="0.5,0.5" Opacity="0.6" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Top="115"/>
+            <Button ToolTip="" Content="Да" Canvas.Left="250" Canvas.Top="500" Height="50" Width="350" Click="ConfirmExit" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" />
+            <Button ToolTip="" Content="Нет" Canvas.Left="750" Canvas.Top="500" Height="50" Width="350" Click="CancelExit" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" />
+            <TextBlock Text="Вы уверены, что хотите выйти" Canvas.Left="465" Canvas.Top="400" HorizontalAlignment="Left" VerticalAlignment="Center"  FontSize="30" Visibility="Visible" Width="420"/>
         </Canvas>
     </Canvas>
 

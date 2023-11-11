@@ -47,13 +47,15 @@ namespace IT_Решения
                 command.ExecuteNonQuery();
                 answer = Convert.ToString(command.ExecuteScalar());
                 answer = answer.Trim();
+                username.Text = "";
+                password.Text = "";
                 if (answer == "user")
                 {
                     userCurrentOrder.Visibility = Visibility.Visible;
                     userTop.Visibility = Visibility.Visible;
                     newOrder.Visibility = Visibility.Hidden;
                     userPreviousOrder.Visibility = Visibility.Hidden;
-                    Comments.Visibility = Visibility.Hidden;
+                    addComments.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
                     UserFindCurrentOrder(sender, e);
                 }
@@ -71,7 +73,7 @@ namespace IT_Решения
                     workerCurrentOrder.Visibility = Visibility.Visible;
                     workerTop.Visibility = Visibility.Visible;
                     workerPreviousOrder.Visibility = Visibility.Hidden;
-                    Comments.Visibility = Visibility.Hidden;
+                    addComments.Visibility = Visibility.Hidden;
                     login.Visibility = Visibility.Hidden;
                     WorkerFindCurrentOrder(sender, e);
                 }
@@ -100,6 +102,7 @@ namespace IT_Решения
             userTop.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Hidden;
             userPreviousOrder.Visibility = Visibility.Hidden;
+            Comments.Visibility = Visibility.Hidden;
             adminCurrentOrder.Visibility = Visibility.Hidden;
             adminTop.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
@@ -107,7 +110,7 @@ namespace IT_Решения
             workerCurrentOrder.Visibility = Visibility.Hidden;
             workerTop.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Hidden;
-            Comments.Visibility = Visibility.Hidden;
+            addComments.Visibility = Visibility.Hidden;
             thisId = 0;
         }
         public void CancelExit(object sender, EventArgs e)
@@ -119,6 +122,7 @@ namespace IT_Решения
             userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Visible;
             userPreviousOrder.Visibility = Visibility.Hidden;
+            Comments.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
         }
         public void UserCurrentOrder(object sender, RoutedEventArgs e)
@@ -126,6 +130,7 @@ namespace IT_Решения
             userCurrentOrder.Visibility = Visibility.Visible;
             newOrder.Visibility = Visibility.Hidden;
             userPreviousOrder.Visibility = Visibility.Hidden;
+            Comments.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
             UserFindCurrentOrder(sender, e);
         }
@@ -134,8 +139,18 @@ namespace IT_Решения
             userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Hidden;
             userPreviousOrder.Visibility = Visibility.Visible;
+            Comments.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
             UserFindPreviousOrder(sender, e);
+        }
+        public void UserComments(object sender, RoutedEventArgs e)
+        {
+            userCurrentOrder.Visibility = Visibility.Hidden;
+            newOrder.Visibility = Visibility.Hidden;
+            userPreviousOrder.Visibility = Visibility.Hidden;
+            Comments.Visibility = Visibility.Visible;
+            exit.Visibility = Visibility.Hidden;
+            UserFindComments(sender, e);
         }
         public void AdminWorkers(object sender, RoutedEventArgs e)
         {
@@ -173,11 +188,20 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             ShowStats();
         }
+        public void AdminNewWorker(object sender, RoutedEventArgs e)
+        {
+            newWorker.Visibility = Visibility.Visible;
+            adminCurrentOrder.Visibility = Visibility.Hidden;
+            Workers.Visibility = Visibility.Hidden;
+            adminPreviousOrder.Visibility = Visibility.Hidden;
+            Stats.Visibility = Visibility.Hidden;
+            exit.Visibility = Visibility.Hidden;
+        }
         public void WorkerCurrentOrder(object sender, RoutedEventArgs e)
         {
             workerCurrentOrder.Visibility = Visibility.Visible;
             workerPreviousOrder.Visibility = Visibility.Hidden;
-            Comments.Visibility = Visibility.Hidden;
+            addComments.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
             WorkerFindCurrentOrder(sender, e);
         }
@@ -185,7 +209,7 @@ namespace IT_Решения
         {
             workerCurrentOrder.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Visible;
-            Comments.Visibility = Visibility.Hidden;
+            addComments.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
             WorkerFindPreviousOrder(sender, e);
         }
@@ -193,7 +217,7 @@ namespace IT_Решения
         {
             workerCurrentOrder.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Hidden;
-            Comments.Visibility = Visibility.Visible;
+            addComments.Visibility = Visibility.Visible;
             exit.Visibility = Visibility.Hidden;
         }
         public struct tabel
@@ -211,7 +235,15 @@ namespace IT_Решения
             public Button error;
             public string[] coloms;
         }
+        public struct comment
+        {
+            public TextBox orderId;
+            public TextBox problemComment;
+            public TextBox descriptionComment;
+            public string[] coloms;
+        }
         private static tabel[] tabels;
+        private static comment[] comments;
         private List<TextBox> cells = new List<TextBox>();
         private List<Button> buttons = new List<Button>();
         private List<Button> error = new List<Button>();
@@ -413,6 +445,68 @@ namespace IT_Решения
             cells.Add(tabels[i].workers);
             canvas.Children.Add(tabels[i].workers);
         }
+        public void ShowComment(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
+        {
+            int n = 0;  
+            comments[i].coloms = new string[m];
+            for (int j = 0; j < comments[i].coloms.Length; j++)
+            {
+                comments[i].coloms[j] = Convert.ToString(reader.GetValue(j));
+            }
+            for (int j = 0; j < comments[i].coloms.Length; j++)
+            {
+                comments[i].coloms[j] = comments[i].coloms[j].Trim();
+            }
+            comments[i].orderId = new TextBox
+            {
+                Width = 50,
+                Height = 40,
+                FontSize = 20
+            };
+            Canvas.SetLeft(comments[i].orderId, 50);
+            Canvas.SetTop(comments[i].orderId, 190 + (i + 1) * 40);
+            comments[i].orderId.Text = comments[i].coloms[n];
+            cells.Add(comments[i].orderId);
+            canvas.Children.Add(comments[i].orderId);
+            n++;
+            comments[i].problemComment = new TextBox
+            {
+                Width = 600,
+                Height = 40,
+                FontSize = 20
+            };
+            Canvas.SetLeft(comments[i].problemComment, 100);
+            Canvas.SetTop(comments[i].problemComment, 190 + (i + 1) * 40);
+            if(comments[i].coloms[n] == "")
+            {
+                comments[i].problemComment.Text = "-";
+            }
+            else
+            {
+                comments[i].problemComment.Text = comments[i].coloms[n];
+            }
+            cells.Add(comments[i].problemComment);
+            canvas.Children.Add(comments[i].problemComment);
+            n++;
+            comments[i].descriptionComment = new TextBox
+            {
+                Width = 600,
+                Height = 40,
+                FontSize = 20
+            };
+            Canvas.SetLeft(comments[i].descriptionComment, 700);
+            Canvas.SetTop(comments[i].descriptionComment, 190 + (i + 1) * 40);
+            if (comments[i].coloms[n] == "")
+            {
+                comments[i].descriptionComment.Text = "-";
+            }
+            else
+            {
+                comments[i].descriptionComment.Text = comments[i].coloms[n];
+            }
+            cells.Add(comments[i].descriptionComment);
+            canvas.Children.Add(comments[i].descriptionComment);
+        }
         public void FindOrder(Canvas canvas, string slqExpressionWhere, string slqExpressionOrder, TextBlock NoOrder, List<TextBox> cells, TextBox textBox, bool isAdmin)// выполняет запросы к бд в соответствии с состоянием строки поиска
         {
             SqlConnection connection = new SqlConnection(connectionString);
@@ -573,6 +667,78 @@ namespace IT_Решения
                 connection.Close();
                 OrderAdded.Visibility = Visibility.Visible;
             }
+        }
+        public void UserFindComments(object sender, RoutedEventArgs e)
+        {
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlExpression = "";
+            if (search8.Text == "")
+            {
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE problemComment IS NOT NULL OR descriptionComment IS NOT NULL";
+            }
+            else
+            {
+                sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{search8.Text}%\' OR problem LIKE \'%{search8.Text}%\' OR description LIKE \'%{search8.Text}%\') AND problemComment IS NOT NULL OR descriptionComment IS NOT NULL";
+            }
+            SqlCommand command = new SqlCommand(sqlExpression, connection);
+            command.ExecuteNonQuery();
+            int count = (int)command.ExecuteScalar();
+            if (cells != null)
+            {
+                foreach (TextBox text in cells)//удаление старой
+                {
+                    canvas.Children.Remove(text);
+                }
+            }
+            if (buttons.Count != 0)
+            {
+                foreach (Button button in buttons)//удаление старой
+                {
+                    canvas.Children.Remove(button);
+                }
+            }
+            buttons.Clear();
+            if (error.Count != 0)
+            {
+                foreach (Button error in error)//удаление старой
+                {
+                    canvas.Children.Remove(error);
+                }
+            }
+            error.Clear();
+            if (count > 0)// есть результат
+            {
+                userNoComments.Visibility = Visibility.Hidden;
+                comments = new comment[count];
+
+                if (search8.Text == "")
+                {
+                    sqlExpression = $"SELECT orderId, problemComment, descriptionComment FROM [dbo].[orders] WHERE problemComment IS NOT NULL OR descriptionComment IS NOT NULL";
+                }
+                else
+                {
+                    sqlExpression = $"SELECT orderId, problemComment, descriptionComment FROM [dbo].[orders] WHERE (equipment LIKE \'%{search8.Text}%\' OR problem LIKE \'%{search8.Text}%\' OR description LIKE \'%{search8.Text}%\') AND problemComment IS NOT NULL OR descriptionComment IS NOT NULL";
+                }
+
+                command = new SqlCommand(sqlExpression, connection);
+                SqlDataReader reader = command.ExecuteReader();
+                int i = 0;
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ShowComment(Comments, reader, i, 3, cells);
+                        i++;
+                    }
+                    reader.Close();                
+                }
+            }
+            else// нет результата
+            {
+                userNoComments.Visibility = Visibility.Visible;
+            }
+            connection.Close();
         }
         public struct WorkerTabel
         {
@@ -835,7 +1001,61 @@ namespace IT_Решения
         }
         public void AddComment(object sender, RoutedEventArgs e)
         {
-
+            CommentAdded.Visibility = Visibility.Hidden;
+            CommentIncorect.Visibility = Visibility.Hidden;
+            if (orderId.Text == "")// проверка заполненности полей
+            {
+                warning4.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                warning4.Visibility = Visibility.Hidden;
+            }
+            if (problemComment.Text == "")
+            {
+                warning5.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                warning5.Visibility = Visibility.Hidden;
+            }
+            if (descriptionComment.Text == "")
+            {
+                warning6.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                warning6.Visibility = Visibility.Hidden;
+            }
+            if (orderId.Text != "" && problemComment.Text != "" && descriptionComment.Text != "")// добавление в бд нового заказа
+            {
+                SqlConnection connection = new SqlConnection(connectionString);
+                connection.Open();
+                //DateTime dateTime = DateTime.Now;
+                string sqlExpression = $"SELECT * FROM [dbo].[orders] WHERE orderId = {orderId.Text}";
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                command.ExecuteNonQuery();
+                string temp = Convert.ToString(command.ExecuteScalar());
+                if(temp == "")
+                {
+                    CommentIncorect.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    try
+                    {
+                        sqlExpression = $"UPDATE [dbo].[orders] SET problemComment = \'{problemComment.Text}\', descriptionComment = \'{descriptionComment.Text}\' WHERE orderId = {orderId.Text}";
+                        command = new SqlCommand(sqlExpression, connection);
+                        command.ExecuteNonQuery();
+                        CommentAdded.Visibility = Visibility.Visible;
+                    }
+                    catch
+                    {
+                        CommentIncorect.Visibility = Visibility.Visible;
+                    }
+                }  
+                connection.Close();
+            }
         }
     }
 }
