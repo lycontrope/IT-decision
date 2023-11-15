@@ -31,7 +31,7 @@
         <Canvas Name="userCurrentOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Текущие заявки" Canvas.Left="50" Canvas.Top="150" Height="40" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search1" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название оборудования, тип неисправности или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="UserFindCurrentOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="userNoCurrentOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
@@ -52,14 +52,14 @@
         <Canvas Name="userPreviousOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Предыдушие заявки" Canvas.Left="50" Canvas.Top="146" Height="79" Width="289" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search2" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название оборудования, тип неисправности или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="UserFindPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="userNoPreviousOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
         <Canvas Name="Comments" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Комментарии" Canvas.Left="50" Canvas.Top="150" Height="40" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search8" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название оборудования, тип неисправности или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="UserFindComments" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="userNoComments" Text="К заданному запросу комментарии отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="665" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" />
         </Canvas>
@@ -84,14 +84,14 @@
         <Canvas Name="adminCurrentOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Текущие заявки" Canvas.Left="50" Canvas.Top="150" Height="40" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search3" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название оборудования, тип неисправности или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="AdminFindCurrentOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="adminNoCurrentOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
         <Canvas Name="adminPreviousOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Предыдушие заявки" Canvas.Left="50" Canvas.Top="146" Height="79" Width="289" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search4" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название оборудования, тип неисправности или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="AdminFindPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="adminNoPreviousOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
@@ -129,14 +129,14 @@
         <Canvas Name="workerCurrentOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Текущие заявки" Canvas.Left="50" Canvas.Top="150" Height="40" Width="234" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search5" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название оборудования, тип неисправности или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="WorkerFindCurrentOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="workerNoCurrentOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" />
         </Canvas>
         <Canvas Name="workerPreviousOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Предыдушие заявки" Canvas.Left="50" Canvas.Top="146" Height="79" Width="289" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="search6" Height="50" Canvas.Left="375" TextWrapping="Wrap" Text="" Canvas.Top="146" Width="735" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
-            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название обарудывания, тип неисправности или описание"/></TextBlock>
+            <TextBlock Canvas.Left="420" Canvas.Top="118" Height="23" Width="505" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"><Run Language="ru-ru" Text="Введите название оборудования, тип неисправности или описание"/></TextBlock>
             <Button ToolTip="" Content="Найти" Canvas.Left="1150" Canvas.Top="146" Height="50" Width="150" Click="WorkerFindPreviousOrder" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <TextBlock x:Name="workerNoPreviousOrders" Text="По заданному запросу заявки отсутствуют" Canvas.Left="375" Canvas.Top="230" Height="40" Width="589" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden"/>
         </Canvas>
