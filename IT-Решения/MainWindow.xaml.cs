@@ -90,11 +90,11 @@ namespace IT_Решения
             }
             connection.Close();
         }
-        public void Exit(object sender, EventArgs e)
+        public void Exit(object sender, EventArgs e)//выход
         {
             exit.Visibility = Visibility.Visible;
         }
-        public void ConfirmExit(object sender, EventArgs e)
+        public void ConfirmExit(object sender, EventArgs e)//подтверждение выхода сокрытие всех полей
         {
             login.Visibility = Visibility.Visible;
             exit.Visibility = Visibility.Hidden;
@@ -113,11 +113,11 @@ namespace IT_Решения
             addComments.Visibility = Visibility.Hidden;
             thisId = 0;
         }
-        public void CancelExit(object sender, EventArgs e)
+        public void CancelExit(object sender, EventArgs e)//отмена выхода
         {
             exit.Visibility = Visibility.Hidden;
         }
-        public void NewOrder(object sender, RoutedEventArgs e)
+        public void NewOrder(object sender, RoutedEventArgs e)//страница добавдения заказа
         {
             userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Visible;
@@ -125,7 +125,7 @@ namespace IT_Решения
             Comments.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
         }
-        public void UserCurrentOrder(object sender, RoutedEventArgs e)
+        public void UserCurrentOrder(object sender, RoutedEventArgs e)//страница текущих заказов 
         {
             userCurrentOrder.Visibility = Visibility.Visible;
             newOrder.Visibility = Visibility.Hidden;
@@ -134,7 +134,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             UserFindCurrentOrder(sender, e);
         }
-        public void UserPreviousOrder(object sender, RoutedEventArgs e)
+        public void UserPreviousOrder(object sender, RoutedEventArgs e)//страница предыдущих заказов 
         {
             userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Hidden;
@@ -143,7 +143,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             UserFindPreviousOrder(sender, e);
         }
-        public void UserComments(object sender, RoutedEventArgs e)
+        public void UserComments(object sender, RoutedEventArgs e)//страница комментрариев
         {
             userCurrentOrder.Visibility = Visibility.Hidden;
             newOrder.Visibility = Visibility.Hidden;
@@ -152,7 +152,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             UserFindComments(sender, e);
         }
-        public void AdminWorkers(object sender, RoutedEventArgs e)
+        public void AdminWorkers(object sender, RoutedEventArgs e)//страница с роботниками
         {
             ShowWorkers(sender, e);
             adminCurrentOrder.Visibility = Visibility.Hidden;
@@ -161,7 +161,7 @@ namespace IT_Решения
             Stats.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
         }
-        public void AdminCurrentOrder(object sender, RoutedEventArgs e)
+        public void AdminCurrentOrder(object sender, RoutedEventArgs e)//страница текущих заказов
         {
             adminCurrentOrder.Visibility = Visibility.Visible;
             Workers.Visibility = Visibility.Hidden;
@@ -170,7 +170,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             AdminFindCurrentOrder(sender, e);
         }
-        public void AdminPreviousOrder(object sender, RoutedEventArgs e)
+        public void AdminPreviousOrder(object sender, RoutedEventArgs e)//страница предыдущих заказов 
         {
             adminCurrentOrder.Visibility = Visibility.Hidden;
             Workers.Visibility = Visibility.Hidden;
@@ -179,7 +179,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             AdminFindPreviousOrder(sender, e);
         }
-        public void AdminStats(object sender, RoutedEventArgs e)
+        public void AdminStats(object sender, RoutedEventArgs e)//страница статистики 
         {
             adminCurrentOrder.Visibility = Visibility.Hidden;
             Workers.Visibility = Visibility.Hidden;
@@ -188,7 +188,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             ShowStats();
         }
-        public void AdminNewWorker(object sender, RoutedEventArgs e)
+        public void AdminNewWorker(object sender, RoutedEventArgs e)//страница добавления нового работника 
         {
             newWorker.Visibility = Visibility.Visible;
             adminCurrentOrder.Visibility = Visibility.Hidden;
@@ -197,7 +197,7 @@ namespace IT_Решения
             Stats.Visibility = Visibility.Hidden;
             exit.Visibility = Visibility.Hidden;
         }
-        public void WorkerCurrentOrder(object sender, RoutedEventArgs e)
+        public void WorkerCurrentOrder(object sender, RoutedEventArgs e)//страница текущих заказов
         {
             workerCurrentOrder.Visibility = Visibility.Visible;
             workerPreviousOrder.Visibility = Visibility.Hidden;
@@ -205,7 +205,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             WorkerFindCurrentOrder(sender, e);
         }
-        public void WorkerPreviousOrder(object sender, RoutedEventArgs e)
+        public void WorkerPreviousOrder(object sender, RoutedEventArgs e)//страница предыдущих заказов 
         {
             workerCurrentOrder.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Visible;
@@ -213,7 +213,7 @@ namespace IT_Решения
             exit.Visibility = Visibility.Hidden;
             WorkerFindPreviousOrder(sender, e);
         }
-        public void NewComment(object sender, RoutedEventArgs e)
+        public void NewComment(object sender, RoutedEventArgs e)//страница добавления нового комментария
         {
             workerCurrentOrder.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Hidden;
@@ -445,7 +445,7 @@ namespace IT_Решения
             cells.Add(tabels[i].workers);
             canvas.Children.Add(tabels[i].workers);
         }
-        public void ShowComment(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)
+        public void ShowComment(Canvas canvas, SqlDataReader reader, int i, int m, List<TextBox> cells)//отображение комментариев
         {
             int n = 0;  
             comments[i].coloms = new string[m];
@@ -621,11 +621,11 @@ namespace IT_Решения
             }
             connection.Close();
         }
-        public void UserFindCurrentOrder(object sender, RoutedEventArgs e)
+        public void UserFindCurrentOrder(object sender, RoutedEventArgs e)//отображение текущих заказов
         {
             FindOrder(userCurrentOrder, "(status = \'в работе\' OR status = \'в ожидании\')", "", userNoCurrentOrders, cells, search1, false);
         }
-        public void UserFindPreviousOrder(object sender, RoutedEventArgs e)
+        public void UserFindPreviousOrder(object sender, RoutedEventArgs e)//отображение предыдущих заказов
         {
             FindOrder(userPreviousOrder, "(status = \'выполнено\')", "", userNoPreviousOrders, cells, search2, false);
         }
@@ -673,11 +673,11 @@ namespace IT_Решения
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             string sqlExpression = "";
-            if (search8.Text == "")
+            if (search8.Text == "")// если пустая строка поиска
             {
                 sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE problemComment IS NOT NULL OR descriptionComment IS NOT NULL";
             }
-            else
+            else // если заполнена
             {
                 sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE (equipment LIKE \'%{search8.Text}%\' OR problem LIKE \'%{search8.Text}%\' OR description LIKE \'%{search8.Text}%\') AND problemComment IS NOT NULL OR descriptionComment IS NOT NULL";
             }
@@ -842,8 +842,8 @@ namespace IT_Решения
             {
                 WorkerTabels[i].coloms[j] = WorkerTabels[i].coloms[j].Trim();
             }
-            WorkerTabels[i].name.Text = WorkerTabels[i].coloms[1];
-            WorkerTabels[i].surname.Text = WorkerTabels[i].coloms[2];
+            WorkerTabels[i].name.Text = WorkerTabels[i].coloms[4];
+            WorkerTabels[i].surname.Text = WorkerTabels[i].coloms[5];
         }
         public void FindWorkers(Canvas thisCanvas, Canvas canvas, List<TextBox> cells, TextBox textBox)// запрос к бд на информацию о работниках
         { 
@@ -933,7 +933,7 @@ namespace IT_Решения
             error[i].Visibility = Visibility.Hidden;
             if (nameSurname.Length > 1)
             {
-                sqlExpression = $"SELECT id FROM [dbo].[workers] WHERE name = \'{nameSurname[0]}\' AND surname = \'{nameSurname[1]}\'";
+                sqlExpression = $"SELECT id FROM [dbo].[entry] WHERE name = \'{nameSurname[0]}\' AND surname = \'{nameSurname[1]}\'";
                 command = new SqlCommand(sqlExpression, connection);
                 command.ExecuteNonQuery();
                 if (int.TryParse(Convert.ToString(command.ExecuteScalar()), out int x))
@@ -941,7 +941,8 @@ namespace IT_Решения
                     sqlExpression = $"UPDATE [dbo].[workers] SET orderId = {id}, status = \'в работе\' WHERE id = {x}";
                     command = new SqlCommand(sqlExpression, connection);
                     command.ExecuteNonQuery();
-                    sqlExpression = $"UPDATE [dbo].[orders] SET status = \'в работе\' WHERE orderId = {id}";
+                    DateTime dateTime = DateTime.Now;
+                    sqlExpression = $"UPDATE [dbo].[orders] SET status = \'в работе\', appointmentDate = \'{dateTime.Year}-{dateTime.Month}-{dateTime.Day}\' WHERE orderId = {id}";
                     command = new SqlCommand(sqlExpression, connection);
                     command.ExecuteNonQuery();
                 }
@@ -974,13 +975,37 @@ namespace IT_Решения
             string sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders] WHERE status = \'выполнено\'";
             SqlCommand command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
-            int count = (int)command.ExecuteScalar();
-            CompletedOrdersAmmount.Text = count.ToString();
+            int completionCount = (int)command.ExecuteScalar();
+            CompletedOrdersAmmount.Text = completionCount.ToString();
             sqlExpression = $"SELECT COUNT(*) FROM [dbo].[orders]";
             command = new SqlCommand(sqlExpression, connection);
             command.ExecuteNonQuery();
-            count = (int)command.ExecuteScalar();
-            allOrdersAmmount.Text = count.ToString();
+            int allCount = (int)command.ExecuteScalar();
+            allOrdersAmmount.Text = allCount.ToString();
+            sqlExpression = $"SELECT addDate, completionDate FROM [dbo].[orders] WHERE status = \'выполнено\'";
+            command = new SqlCommand(sqlExpression, connection);
+            SqlDataReader reader = command.ExecuteReader();
+            double averageTime = 0;
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    DateTime add = Convert.ToDateTime(reader.GetValue(0));
+                    DateTime completion = Convert.ToDateTime(reader.GetValue(1));
+                    averageTime += (completion - add).TotalDays;
+                }
+                averageTime /= completionCount;
+                reader.Close();
+            }
+            if (averageTime == 0)
+            {
+                averageOrderTime.Text = "нет выполненных заказов";
+            }
+            else
+            {
+                averageOrderTime.Text = $"{averageTime} дней";
+            }
+            connection.Close();
         }
         public void AdminFindCurrentOrder(object sender, RoutedEventArgs e)
         {

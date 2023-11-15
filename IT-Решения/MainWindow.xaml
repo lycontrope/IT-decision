@@ -102,7 +102,7 @@
             <TextBlock Text="Общее количество заказов" Canvas.Left="50" Canvas.Top="285" Height="45" Width="385" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="allOrdersAmmount" Height="45" Canvas.Left="445" TextWrapping="Wrap" Text="" Canvas.Top="285" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" Background="#FFEAFDC1" BorderBrush="#FFEAFDC1"/>
             <TextBlock Text="Среднее время выполнения заявки" Canvas.Left="50" Canvas.Top="355" Height="45" Width="495" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox x:Name="averageOrderTime" Height="45" Canvas.Left="555" TextWrapping="Wrap" Text="" Canvas.Top="355" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" Background="#FFEAFDC1" BorderBrush="#FFEAFDC1" />
+            <TextBox x:Name="averageOrderTime" Height="45" Canvas.Left="555" TextWrapping="Wrap" Text="" Canvas.Top="355" Width="365" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" Background="#FFEAFDC1" BorderBrush="#FFEAFDC1" />
         </Canvas>
         <Canvas Name="newWorker" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Заполниете все поля" Canvas.Left="50" Canvas.Top="145" Height="40" Width="320" TextAlignment="Center" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
