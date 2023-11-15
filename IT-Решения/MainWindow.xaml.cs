@@ -106,7 +106,9 @@ namespace IT_Решения
             adminCurrentOrder.Visibility = Visibility.Hidden;
             adminTop.Visibility = Visibility.Hidden;
             adminPreviousOrder.Visibility = Visibility.Hidden;
+            Workers.Visibility = Visibility.Hidden;
             Stats.Visibility = Visibility.Hidden;
+            newWorker.Visibility = Visibility.Hidden;
             workerCurrentOrder.Visibility = Visibility.Hidden;
             workerTop.Visibility = Visibility.Hidden;
             workerPreviousOrder.Visibility = Visibility.Hidden;
@@ -661,7 +663,7 @@ namespace IT_Решения
                 SqlConnection connection = new SqlConnection(connectionString);
                 connection.Open();
                 DateTime dateTime = DateTime.Now;
-                string sqlExpression = $"INSERT INTO [dbo].[orders] VALUES (\'{dateTime.Year}-{dateTime.Month}-{dateTime.Day}\', \'{equipmentName.Text}\',\'{problemName.Text}\',\'{descriptionName.Text}\', \'в ожидании\', {thisId})";
+                string sqlExpression = $"INSERT INTO [dbo].[orders] VALUES (\'{dateTime.Year}-{dateTime.Month}-{dateTime.Day}\', \'{equipmentName.Text}\',\'{problemName.Text}\',\'{descriptionName.Text}\', \'в ожидании\', {thisId}, NULL, NULL, NULL, NULL )";
                 SqlCommand command = new SqlCommand(sqlExpression, connection);
                 command.ExecuteNonQuery();
                 connection.Close();

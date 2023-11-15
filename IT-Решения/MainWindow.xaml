@@ -37,7 +37,7 @@
         </Canvas>
         <Canvas Name="newOrder" Focusable="True" Opacity="1" Visibility="Hidden">
             <TextBlock Text="Заполниете все поля" Canvas.Left="50" Canvas.Top="145" Height="40" Width="320" TextAlignment="Center" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBlock Text="Оборудывание" Canvas.Left="59" Canvas.Top="215" Height="78" Width="220" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock Text="Оборудование" Canvas.Left="59" Canvas.Top="215" Height="78" Width="220" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TextBox x:Name="equipmentName" Height="50" Canvas.Left="50" TextWrapping="Wrap" Text="" Canvas.Top="265" Width="1060" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30"/>
             <Rectangle x:Name="warning1" Tag="wall" Stroke="Red" StrokeThickness="3" Height="56" Width="1066" Canvas.Top="262" RenderTransformOrigin="0.5,0.5" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center" Canvas.Left="47" Visibility="Hidden"/>
             <TextBlock Text="Тип неисправности" Canvas.Left="59" Canvas.Top="355" Height="78" Width="276" TextAlignment="Center" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
